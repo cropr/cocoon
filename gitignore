@@ -1,0 +1,15 @@
+# backend
+__pycache__/
+
+# frontend
+node_modules/
+.nuxt/
+.output/
+
+# general
+dist/
+.env
+.idea/
+.vscode/
+.DS_Store
+shared/secrets/
