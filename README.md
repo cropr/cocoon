@@ -41,14 +41,14 @@
 In frontend directory
 
 ```bash
-API_URL=https://www.cocoon.be/ yarn generate
-gcloud app deply
+API_URL=https://cocoon.kosk.be/ yarn generate
+gcloud app deploy
 ```
 
 In backend directory
 
 ```bash
-gcloud app deply
+gcloud app deploy
 ```
 
 ## 1 time actions after 1ste version app is uploaded
