@@ -26,7 +26,7 @@
   - Javascript origin 1: "https://cocoon.kosk.be"
   - Javascript origin 2: "http://localhost:3000"
   - Javascript origin 2: "http://localhost"
-- Copy Client ID to  backend/app.yaml and to frontend/pages/mgmt/mgmt.index
+- Copy Client ID to  backend/app.yaml and to frontend/pages/mgmt/mgmt.index and to backend/cocoon/settings.py
 
 ## Secrets
 

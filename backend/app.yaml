@@ -6,7 +6,6 @@ env_variables:
   FILESTORE_BUCKET: cocoon-kosk.appspot.com
   GOOGLE_PROJECT_ID: cocoon-kosk
   GOOGLE_CLIENT_ID: 899786740417-dhtk8pilvkhkne3ht3c6ecbnm0619ijm.apps.googleusercontent.com
-  REDDEVIL_LOGLEVEL=DEBUG
 
 
 handlers:

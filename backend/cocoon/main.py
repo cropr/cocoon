@@ -41,6 +41,11 @@ register_app(app, "cocoon.settings", "/api")
 settings = get_settings()
 logger = logging.getLogger(__name__)
 logger.info(f"Starting website cocoon {version} ...")
+logger.debug("test debug message")
+logger.warning("test warning message")
+logger.info("test info message")
+logger.error("test error message")
+logger.critical("test critical message")
 
 # add CORS middleware for dev only
 app.add_middleware(

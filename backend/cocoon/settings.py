@@ -24,7 +24,7 @@ FILESTORE = {
 }
 
 GOOGLE_CLIENT_ID = (
-    "464711449307-7j2oecn3mkfs1eh3o7b5gh8np3ebhrdp.apps.googleusercontent.com"
+    "899786740417-dhtk8pilvkhkne3ht3c6ecbnm0619ijm.apps.googleusercontent.com"
 )
 GOOGLE_LOGIN_DOMAINS = ["kosk.be"]
 GOOGLE_PROJECT_ID = "cocoon-kosk"
@@ -48,7 +48,7 @@ LOG_CONFIG = {
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
-            "level": "INFO",
+            "level": "DEBUG",
             "formatter": "simple",
             "stream": "ext://sys.stderr",
         },
