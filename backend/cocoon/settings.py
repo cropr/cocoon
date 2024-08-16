@@ -20,14 +20,14 @@ EMAIL = {
 
 FILESTORE = {
     "manager": "google",
-    "bucket": os.environ.get("FILESTORE_BUCKET", "cocoon-website.appspot.com"),
+    "bucket": os.environ.get("FILESTORE_BUCKET", "cocoon-kosk.appspot.com"),
 }
 
 GOOGLE_CLIENT_ID = (
     "464711449307-7j2oecn3mkfs1eh3o7b5gh8np3ebhrdp.apps.googleusercontent.com"
 )
 GOOGLE_LOGIN_DOMAINS = ["kosk.be"]
-GOOGLE_PROJECT_ID = "cocoon-website"
+GOOGLE_PROJECT_ID = "cocoon-kosk"
 
 JWT_ALGORITHM = "HS256"
 JWT_SECRET = "levedetorrevanostende"
@@ -56,12 +56,12 @@ LOG_CONFIG = {
     "loggers": {
         "cocoon": {
             "handlers": ["console"],
-            "level": "INFO",
+            "level": os.getenv("COCOON_LOGLEVEL", "INFO"),
             "propagate": False,
         },
         "reddevil": {
             "handlers": ["console"],
-            "level": "INFO",
+            "level": os.getenv("REDDEVIL_LOGLEVEL", "INFO"),
             "propagate": False,
         },
         "fastapi": {
@@ -115,12 +115,12 @@ ls = "No local settings found"
 
 if COCOON_MODE == "local":
     ls = "importing local settings"
-    from env_local import *
+    from env_local import *  # noqa F403
 
 
 if COCOON_MODE == "prodtest":
     ls = "importing prodtest settings"
-    from env_prodtest import *
+    from env_prodtest import *  # noqa F403
 
 if COLORLOG:
     LOG_CONFIG["handlers"]["console"]["formatter"] = "color"  # type: ignore

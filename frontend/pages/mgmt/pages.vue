@@ -1,111 +1,105 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import ProgressLoading from '@/components/ProgressLoading.vue'
-import SnackbarMessage from '@/components/SnackbarMessage.vue'
+import { ref, onMounted } from "vue";
+import ProgressLoading from "@/components/ProgressLoading.vue";
+import SnackbarMessage from "@/components/SnackbarMessage.vue";
 
-import { useMgmtTokenStore } from "@/store/mgmttoken"
+import { useMgmtTokenStore } from "@/store/mgmttoken";
 import { usePersonStore } from "@/store/person";
 import { storeToRefs } from "pinia";
 
 // communication
-const { $backend } = useNuxtApp()
-const route = useRoute()
-const router = useRouter()
+const { $backend } = useNuxtApp();
+const route = useRoute();
+const router = useRouter();
 
 //  snackbar and loading widgets
-const refsnackbar = ref(null)
-let showSnackbar
-const refloading = ref(null)
-let showLoading
-
+const refsnackbar = ref(null);
+let showSnackbar;
+const refloading = ref(null);
+let showLoading;
 
 // stores
-const mgmtstore = useMgmtTokenStore()
-const { token } = storeToRefs(mgmtstore)
-const personstore = usePersonStore()
-const { person } = storeToRefs(personstore)
+const mgmtstore = useMgmtTokenStore();
+const { token } = storeToRefs(mgmtstore);
+const personstore = usePersonStore();
+const { person } = storeToRefs(personstore);
 
 // model
-let checkinlaunched = false
-let checkinsuccess = false
+let checkinlaunched = false;
+let checkinsuccess = false;
 
 definePageMeta({
   layout: "mgmt",
-})
+});
 
 useHead({
-  title: 'Management Pages',
-})
-
+  title: "Management Pages",
+});
 
 async function checkAuth() {
-  // console.log('checking if auth is already set', token.value)
-  // if (token.value) return
-  // if (person.value.credentials.length === 0) {
-  //   router.push('/mgmt')
-  //   return
-  // }
-  // if (!person.value.email.endsWith('@cocoon.be')) {
-  //   router.push('/mgmt')
-  //   return
-  // }
-  // let reply
-  // showLoading(true)
-  // // now login using the Google auth token
-  // try {
-  //   reply = await $backend("accounts", "login", {
-  //     logintype: 'google',
-  //     token: person.value.credentials,
-  //     username: null,
-  //     password: null,
-  //   })
-  // }
-  // catch (error) {
-  //   console.log('failed login redirecting to /mgmt')
-  //   mgmtstore.updateToken(null)
-  //   router.push('/mgmt')
-  // }
-  // finally {
-  //   showLoading(false)
-  // }
-  // mgmtstore.updateToken(reply.data)
+  console.log("Pages: checking if auth is already set", token.value);
+  if (token.value) return;
+  if (person.value.credentials.length === 0) {
+    console.log("Pages: person credentials not set");
+    router.push("/mgmt");
+    return;
+  }
+  if (!person.value.email.endsWith("@kosk.be")) {
+    console.log("Pages: not a valid kosk address");
+    router.push("/mgmt");
+    return;
+  }
+  let reply;
+  showLoading(true);
+  // now login using the Google auth token
+  try {
+    reply = await $backend("accounts", "login", {
+      logintype: "google",
+      token: person.value.credentials,
+      username: null,
+      password: null,
+    });
+  } catch (error) {
+    console.log("Pages: failed account login ");
+    mgmtstore.updateToken(null);
+    router.push("/mgmt");
+  } finally {
+    showLoading(false);
+  }
+  mgmtstore.updateToken(reply.data);
 }
 
-
 async function checkout() {
-  let reply
-  showLoading(true)
+  let reply;
+  showLoading(true);
   try {
     reply = await $backend("page", "checkout", {
       token: token.value,
-    })
-  }
-  catch (error) {
-    console.error('failed', error)
-    showSnackbar("Error while copying content to operational site")
+    });
+  } catch (error) {
+    console.error("failed", error);
+    showSnackbar("Error while copying content to operational site");
     // mgmtstore.updateToken(null)
     // router.push('/mgmt')
-    return
+    return;
+  } finally {
+    showLoading(false);
   }
-  finally {
-    showLoading(false)
-  }
-  showSnackbar("Content copied to operational site")
-  mgmtstore.updateToken(reply.data)
+  showSnackbar("Content copied to operational site");
+  mgmtstore.updateToken(reply.data);
 }
-6
+6;
 
 function openPageCollection() {
-  window.open(`http://cc.kosk.be/cp/collections/pages`, '_statamic')
+  window.open(`http://cc.kosk.be/cp/collections/pages`, "_statamic");
 }
 
 onMounted(() => {
-  showSnackbar = refsnackbar.value.showSnackbar
-  showLoading = refloading.value.showLoading
-  // checkAuth()
-})
+  showSnackbar = refsnackbar.value.showSnackbar;
+  showLoading = refloading.value.showLoading;
+  checkAuth();
+});
 </script>
-
 
 <template>
   <v-container>
@@ -118,20 +112,22 @@ onMounted(() => {
     <p>In order to make changes to a page, you have the following steps</p>
     <ul>
       <li>Open the Statamic tool (it opens in a separate browser tab/window)</li>
-      <v-btn variant="tonal" @click="openPageCollection">open Statamic</v-btn><br><br>
-      <li>Modify the pages in the statamic tool</li><br>
+      <v-btn variant="tonal" @click="openPageCollection">open Statamic</v-btn
+      ><br /><br />
+      <li>Modify the pages in the statamic tool</li>
+      <br />
       <li>Copy the modified content in Statamic to the operational site</li>
-      <v-btn variant="tonal" @click="checkout">copy</v-btn><br><br>
+      <v-btn variant="tonal" @click="checkout">copy</v-btn
+      ><br /><br />
     </ul>
-    <br>
-    <P>
+    <br />
+    <p>
       When opening the Statamic tool for the first time, you will need to provide a
       username + password.
-    </P>
+    </p>
     <ul>
       <li><b>username:</b> bestuur@kosk.be</li>
       <li><b>password:</b> cocoon25</li>
-
     </ul>
   </v-container>
 </template>

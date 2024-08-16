@@ -1,44 +1,39 @@
 <script setup>
-// import { onMounted } from 'vue'
-// import { usePersonStore } from "@/store/person";
-// import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
+import { usePersonStore } from "@/store/person";
+import { storeToRefs } from "pinia";
 
-
-// const config = useRuntimeConfig()
-// const personstore = usePersonStore()
-// const { person } = storeToRefs(personstore)
+const config = useRuntimeConfig();
+const personstore = usePersonStore();
+const { person } = storeToRefs(personstore);
 
 definePageMeta({
   layout: "mgmt",
-})
+});
 
 useHead({
-  title: 'Management Overview',
-})
+  title: "Management Overview",
+});
 
+function checkAuth() {
+  if (person.value.credentials.length === 0) {
+    navigateTo("/mgmt");
+  }
+  if (!person.value.email.endsWith("@kosk.be")) {
+    navigateTo("/mgmt");
+  }
+}
 
-// function checkAuth() {
-//   if (person.value.credentials.length === 0) {
-//     navigateTo('/mgmt')
-//   }
-//   if (!person.value.email.endsWith('@kosk.be')) {
-//     navigateTo('/mgmt')
-//   }
-// }
-
-
-// onMounted(() => {
-//   checkAuth()
-// })
+onMounted(() => {
+  checkAuth();
+});
 </script>
-
 
 <template>
   <v-container class="markdowncontent">
     <h1>Overview</h1>
     <ul>
-      <li>Managing the <NuxtLink to="/mgmt/pages">Pages</NuxtLink>
-      </li>
+      <li>Managing the <NuxtLink to="/mgmt/pages">Pages</NuxtLink></li>
       <!-- <li>Managing the <NuxtLink to="/mgmt/paymentrequests">Payment Requests</NuxtLink>
       </li>
       <li>Managing the <NuxtLink to="/mgmt/registrations">Registrations</NuxtLink>

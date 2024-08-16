@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cocoon"
-version = "2.14.1"
+version = "1.0.0"
 description = "cocoon backend"
 authors = ["Ruben Decrop <ruben.decrop@cocoon.be>"]
 
@@ -11,7 +11,7 @@ gunicorn = "^21.2.0"
 python-dotenv = "^1.0.1"
 openpyxl = "^3.1.2"
 asyncssh = "^2.14.2"
-reddevil = {path = "libs/reddevil-3.3.7-py3-none-any.whl"}
+reddevil = {path = "libs/reddevil-3.3.8-py3-none-any.whl"}
 
 [tool.poetry.group.dev.dependencies]
 black = "^23"

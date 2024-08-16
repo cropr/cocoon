@@ -3,9 +3,10 @@ entrypoint: gunicorn cocoon.main:app --worker-class uvicorn.workers.UvicornWorke
 service: cocoon-api
 
 env_variables:
-  FILESTORE_BUCKET: cocoonwebsiteprod.appspot.com
-  GOOGLE_PROJECT_ID: cocoonwebsiteprod
-  GOOGLE_CLIENT_ID: 464711449307-7j2oecn3mkfs1eh3o7b5gh8np3ebhrdp.apps.googleusercontent.com
+  FILESTORE_BUCKET: cocoon-kosk.appspot.com
+  GOOGLE_PROJECT_ID: cocoon-kosk
+  GOOGLE_CLIENT_ID: 899786740417-dhtk8pilvkhkne3ht3c6ecbnm0619ijm.apps.googleusercontent.com
+  REDDEVIL_LOGLEVEL=DEBUG
 
 
 handlers:

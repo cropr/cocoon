@@ -4,9 +4,7 @@ EMAIL = {
     "backend": "SMTP",
     "host": "maildev.decrop.net",
     "port": "1025",
-    "sender": "noreply@cocoon.be",
-    "bcc_reservation": "ruben.decrop@gmail.com,floreal@cocoon.be",
-    "bcc_enrollment": "ruben.decrop@gmail.com,luc.cornet@cocoon.be",
+    "sender": "noreply@kosk.be",
 }
 
 SECRETS = {

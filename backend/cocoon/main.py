@@ -1,18 +1,25 @@
 # copyright Ruben Decrop 2012 - 2024
 # copyright Chessdevil Consulting 2015 - 2024
 
-import logging, logging.config
+import logging
+import logging.config
 
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
-from reddevil.core import register_app, get_settings, connect_mongodb, close_mongodb
+from reddevil.core import (
+    register_app,
+    get_settings,
+    connect_mongodb,
+    close_mongodb,
+)
 
 # to support yaml/json mimetype
 # import mimetypes
+
+from . import version
 
 
 @asynccontextmanager
@@ -21,8 +28,6 @@ async def lifespan(app: FastAPI):
     yield
     close_mongodb()
 
-
-from . import version
 
 # load and register app
 app = FastAPI(
@@ -49,7 +54,7 @@ app.add_middleware(
 
 # import api endpoints
 logger.info("loading api_account")
-from reddevil.account import api_account
+from reddevil.account import api_account  # noqa F401
 
 logger.info("loading api_attendee")
 from cocoon.attendee import api_attendee  # noqa F401
@@ -69,11 +74,11 @@ from cocoon.page import api_page  # noqa F401
 # logger.info("loading api_paymentrequest")
 # from cocoon.paymentrequest import api_paymentrequest  # noqa F401
 
-logger.info("loading api_statamic")  # noqa F401
-from cocoon.statamic import api_statamic
+logger.info("loading api_statamic")
+from cocoon.statamic import api_statamic  # noqa F401
 
-logger.info("loading api_tournament")  # noqa F401
-from cocoon.tournament import api_tournament
+logger.info("loading api_tournament")
+from cocoon.tournament import api_tournament  # noqa F401
 
 app.include_router(api_account.router)
 app.include_router(api_attendee.router)
@@ -99,4 +104,4 @@ for route in app.routes:
         route.operation_id = route.name[4:]
 
 # importing test endpoints
-import cocoon.tst_endpoints
+import cocoon.tst_endpoints  # noqa F401
