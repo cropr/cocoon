@@ -250,10 +250,7 @@ async def confirm_registration(id: str, bt: BackgroundTasks) -> None:
         confirmed=True, registrationtime=datetime.now(), enabled=True
     )
     enr = await update_registration(id, su)
-    if enr.event == "bjk2024":
-        sendemail_enrollment_bjk(enr)
-    else:
-        sendemail_registration(enr)
+    sendemail_registration(enr)
 
 
 async def get_photo(id: str):
@@ -278,7 +275,7 @@ def sendemail_registration(enr: Registration) -> None:
         template="mailregistration_en.md",
         locale=enr.locale,
         attachments=[],
-        bcc=settings.EMAIL["bcc_registration"],
+        bcc=settings.EMAIL.get("bcc_registration")
     )
     edict = enr.model_dump()
     edict["category"] = edict["category"].value
@@ -304,7 +301,7 @@ def sendemail_confirmationreq(enr: Registration) -> None:
     sendemail_no_attachments(mp, edict, "confirmation enrollment")
 
 
-async def send_notconfirmed_vk() -> None:
+async def send_notconfirmed() -> None:
     """
     get a list of all enrollments of an event that are not confirmed
     and sends a requestConfirmation email to them

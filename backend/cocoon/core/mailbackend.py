@@ -34,6 +34,7 @@ class SmtpBackend(BaseEmailBackend):
         with smtplib.SMTP(settings.EMAIL["host"], settings.EMAIL["port"]) as s:
             if settings.EMAIL.get("user"):
                 s.login(settings.EMAIL["user"], settings.EMAIL["password"])
+            logger.info(f'sending email to host {settings.EMAIL["host"]}')
             s.send_message(msg)
 
 

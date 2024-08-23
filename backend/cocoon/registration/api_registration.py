@@ -23,6 +23,7 @@ from cocoon.registration import (
     get_photo,
     lookup_idbel,
     lookup_idfide,
+    send_notconfirmed,
     update_registration,
     upload_photo,
 )
@@ -39,7 +40,7 @@ async def api_get_registrations():
         return await get_registrations()
     except RdException as e:
         raise HTTPException(status_code=e.status_code, detail=e.description)
-    except:
+    except Exception:
         logger.exception("failed api call get_registrations_vk")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
@@ -51,7 +52,7 @@ async def api_create_registration(enr: RegistrationIn):
         return id
     except RdException as e:
         raise HTTPException(status_code=e.status_code, detail=e.description)
-    except:
+    except Exception:
         logger.exception("failed api call create_registration_vk")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
@@ -63,7 +64,7 @@ async def api_update_registration_vk(id: str, enr: RegistrationUpdate):
         return id
     except RdException as e:
         raise HTTPException(status_code=e.status_code, detail=e.description)
-    except:
+    except Exception:
         logger.exception("failed api call create_registration_vk")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
@@ -77,7 +78,7 @@ async def api_confirm_registration(id: str, bt: BackgroundTasks):
         await confirm_registration(id, bt)
     except RdException as e:
         raise HTTPException(status_code=e.status_code, detail=e.description)
-    except:
+    except Exception:
         logger.exception("failed api call confirm_registration")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
@@ -88,7 +89,7 @@ async def api_lookup_idbel(id: str):
         return await lookup_idbel(id)
     except RdException as e:
         raise HTTPException(status_code=e.status_code, detail=e.description)
-    except:
+    except Exception:
         logger.exception("failed api call lookup_idbel")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
@@ -99,7 +100,7 @@ async def api_lookup_idfide(id: str):
         return await lookup_idfide(id)
     except RdException as e:
         raise HTTPException(status_code=e.status_code, detail=e.description)
-    except:
+    except Exception:
         logger.exception("failed api call lookup_idfide")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
@@ -110,7 +111,7 @@ async def api_anon_upload_photo(id: str, body: dict):
         return await upload_photo(id, body["photo"])
     except RdException as e:
         raise HTTPException(status_code=e.status_code, detail=e.description)
-    except:
+    except Exception:
         logger.exception("failed api call upload_photo")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
@@ -121,17 +122,17 @@ async def api_anon_get_photo(id: str):
         return await get_photo(id)
     except RdException as e:
         raise HTTPException(status_code=e.status_code, detail=e.description)
-    except:
+    except Exception:
         logger.exception("failed api call get_photo")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@router.post("/notconfirmed_vk")
-async def api_get_notconfirmed_vk():
+@router.post("/notconfirmed")
+async def api_get_notconfirmed():
     try:
-        return await send_notconfirmed_vk()
+        return await send_notconfirmed()
     except RdException as e:
         raise HTTPException(status_code=e.status_code, detail=e.description)
-    except:
+    except Exception:
         logger.exception("failed api call get_photo")
         raise HTTPException(status_code=500, detail="Internal Server Error")

@@ -19,6 +19,7 @@ from .registration import (
     get_photo,
     lookup_idbel,
     lookup_idfide,
+    send_notconfirmed,
     update_registration,
     upload_photo,
 )

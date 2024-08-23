@@ -2,26 +2,26 @@
 # copyright Chessdevil Consulting BVBA 2015 - 2019
 
 from datetime import datetime
-from typing import Dict, Any, List, Optional, Type, Union
-from enum import Enum, auto
-from pydantic import BaseModel, Field
+from enum import StrEnum, auto
+from pydantic import BaseModel
 from reddevil.core import DbBase
 
 
-class RegistrationCategory(str, Enum):
+class RegistrationCategory(StrEnum):
     OPEN = auto()
     M1800 = auto()
+    SEN = auto()
     ARB = auto()
     ORG = auto()
     OTHER = auto()
 
 
-class Gender(str, Enum):
+class Gender(StrEnum):
     M = "M"
     F = "F"
 
 
-class NatStatus(str, Enum):
+class NatStatus(StrEnum):
     fidebelg = "Fide Belg."
     nobelg = "No Belg."
     unknown = "Unknown"
@@ -86,17 +86,11 @@ class RegistrationIn(BaseModel):
     """
 
     category: str
-    emailparent: str
     emailplayer: str
-    emailattendant: str
-    fullnameattendant: str
-    fullnameparent: str
     idbel: str
     idfide: str | None = None
     idsub: str | None = None
     locale: str
-    mobileattendant: str
-    mobileparent: str
     mobileplayer: str
 
 
@@ -131,11 +125,11 @@ class RegistrationUpdate(BaseModel):
     """
 
     badgemimetype: str | None = None
-    badgeimage: Optional[bytes] = None
+    badgeimage: bytes | None = None
     badgelength: int | None = None
     birthday: str | None = None
     birthyear: int | None = None
-    category: Optional[RegistrationCategory] = None
+    category: RegistrationCategory | None = None
     chesstitle: str | None = None
     confirmed: bool | None = None
     custom: str | None = None
