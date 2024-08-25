@@ -13,7 +13,7 @@ COLORLOG = False
 EMAIL = {
     "backend": os.environ.get("EMAIL_BACKEND", "GMAIL"),
     "sender": "noreply@kosk.be",
-    "bcc_registration": "bestuur@kosk.be",
+    "bcc_registration": "cocoon@kosk.be,ruben.decrop@gmail.com",
     "account": "ruben@kosk.be",
 }
 

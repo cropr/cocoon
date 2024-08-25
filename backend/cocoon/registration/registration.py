@@ -263,21 +263,21 @@ async def get_photo(id: str):
     return Response(content=photo["badgeimage"], media_type=photo["badgemimetype"])
 
 
-def sendemail_registration(enr: Registration) -> None:
+def sendemail_registration(reg: Registration) -> None:
     from cocoon.core.mail import MailParams, sendemail_no_attachments
 
     settings = get_settings()
-    emails = [enr.emailplayer]
+    emails = [reg.emailplayer]
     mp = MailParams(
         subject="Registration Cocoon",
         sender=settings.EMAIL["sender"],
         receiver=",".join(emails),
         template="mailregistration_en.md",
-        locale=enr.locale,
+        locale=reg.locale,
         attachments=[],
-        bcc=settings.EMAIL.get("bcc_registration")
+        bcc=settings.EMAIL.get("bcc_registration"),
     )
-    edict = enr.model_dump()
+    edict = reg.model_dump()
     edict["category"] = edict["category"].value
     sendemail_no_attachments(mp, edict, "confirmation enrollment")
 
