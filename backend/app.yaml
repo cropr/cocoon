@@ -1,6 +1,5 @@
 runtime: python311
 entrypoint: gunicorn cocoon.main:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
-service: cocoon-api
 
 env_variables:
   FILESTORE_BUCKET: cocoon-kosk.appspot.com
@@ -9,6 +8,26 @@ env_variables:
 
 
 handlers:
-  - url: /.*
+  - url: /api/.*
     script: auto
+    secure: always
+
+  - url: /(.*\..+)$
+    static_files: dist/\1
+    upload: dist/(.*\..+)$
+    secure: always
+
+  - url: /
+    static_files: dist/index.html
+    secure: always
+    upload: dist/index.html
+
+  - url: /([^\.]*)$
+    static_files: dist/\1/index.html
+    upload: dist/([^\.]*)/index.html
+    secure: always
+
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html
     secure: always

@@ -1,8 +1,12 @@
 [tool.poetry]
-name = "cocoon"
+name = "Cocoon"
 version = "1.0.2"
 description = "cocoon backend"
-authors = ["Ruben Decrop <ruben.decrop@cocoon.be>"]
+authors = ["Ruben Decrop <ruben@kosk.be>"]
+
+packages = [
+    { include = "cocoon", from = "backend" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -22,3 +26,14 @@ toml = "^0.10.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["E402"]

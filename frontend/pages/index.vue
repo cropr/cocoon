@@ -1,36 +1,47 @@
 <script setup>
-import { ref, watch } from "vue";
-import showdown from "showdown";
+import { ref, watch } from "vue"
+import showdown from "showdown"
 
-const mdConverter = new showdown.Converter();
+//snackbar progessloading
+import ProgressLoading from "@/components/ProgressLoading.vue"
+import SnackbarMessage from "@/components/SnackbarMessage.vue"
+const refsnackbar = ref(null)
+let showSnackbar
+const refloading = ref(null)
+let showLoading
 
-const { $backend } = useNuxtApp();
-let page;
-const pagetitle = ref("");
-const pagecontent = ref("");
+const { $backend } = useNuxtApp()
+let page
+const pagetitle = ref("")
+const pagecontent = ref("")
 
 async function getContent() {
+  showLoading(true)
   try {
     const reply = await $backend("filestore", "anon_get_file", {
       group: "pages",
       name: "cocoon.md",
-    });
-    console.log("read content", reply.data);
-    page = useMarkdown(reply.data);
-    console.log("page", page);
-    pagetitle.value = page.metadata.title;
-    pagecontent.value = page.html;
+    })
+    page = useMarkdown(reply.data)
+    pagetitle.value = page.metadata.title
+    pagecontent.value = page.html
   } catch (error) {
-    console.log("failed");
+    showSnackbar("Page loading failed")
+  } finally {
+    showLoading(false)
   }
 }
 
 onMounted(() => {
-  getContent();
-});
+  showSnackbar = refsnackbar.value.showSnackbar
+  showLoading = refloading.value.showLoading
+  getContent()
+})
 </script>
 
 <template>
+  <SnackbarMessage ref="refsnackbar" />
+  <ProgressLoading ref="refloading" />
   <v-container fluid class="nopadding">
     <img width="100%" src="/img/landschap2.jpg" />
   </v-container>

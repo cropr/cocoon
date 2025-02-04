@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
-const drawer = ref(false);
+import { ref } from "vue"
+const drawer = ref(false)
 </script>
 
 <template>
@@ -20,6 +20,7 @@ const drawer = ref(false);
           </template>
           <v-list-item to="registration" title="Registration" />
           <v-list-item to="playing-schedule" title="Playing schedule" />
+          <v-list-item href="/img/Cocoon2025.pdf" title="Brochure" />
           <!-- <v-list-item to="participants" title="Participants" /> -->
         </v-list-group>
         <v-list-group no-action>

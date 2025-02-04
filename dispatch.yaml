@@ -1,3 +1,2 @@
 dispatch:
-  - url: "*/api*"
-    service: cocoon-api
+
