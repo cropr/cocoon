@@ -1,4 +1,4 @@
-## Confirmation registration Cocoon 2024
+## Confirmation registration Cocoon 2025
 
 ### Participant Details
 
