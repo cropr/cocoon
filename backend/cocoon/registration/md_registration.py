@@ -21,12 +21,6 @@ class Gender(StrEnum):
     F = "F"
 
 
-class NatStatus(StrEnum):
-    fidebelg = "Fide Belg."
-    nobelg = "No Belg."
-    unknown = "Unknown"
-
-
 class RegistrationRepresentative(BaseModel):
     emailattendant: str | None
     emailparent: str | None
@@ -65,7 +59,6 @@ class EnrollmentDB(BaseModel):
     mobileplayer: str
     nationalitybel: str
     nationalityfide: str
-    natstatus: str
     present: datetime | None
     rating: int
     ratingbel: int
@@ -147,7 +140,6 @@ class RegistrationUpdate(BaseModel):
     mobileplayer: str | None = None
     nationalitybel: str | None = None
     nationalityfide: str | None = None
-    natstatus: str | None = NatStatus.unknown.value
     payment_id: str | None = None
     present: datetime | None = None
     rating: int | None = None
@@ -188,7 +180,6 @@ class Registration(BaseModel):
     mobileplayer: str | None = None
     nationalitybel: str | None = None
     nationalityfide: str | None = None
-    natstatus: str | None = NatStatus.unknown.value
     payment_id: str | None = None
     present: datetime | None = None
     rating: int | None = None
@@ -212,7 +203,6 @@ class IdReply(BaseModel):
     last_name: str | None = ""
     nationalitybel: str = "BEL"
     nationalityfide: str = ""
-    natstatus: NatStatus = NatStatus.unknown
     ratingbel: int | None = 0
     ratingfide: int | None = 0
     subconfirmed: bool = False

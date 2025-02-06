@@ -3,12 +3,8 @@
 
 import logging
 from typing import List
-from fastapi import HTTPException, BackgroundTasks, Depends, APIRouter
-from fastapi.security import HTTPAuthorizationCredentials
-from reddevil.core import RdException, bearer_schema
-from reddevil.core import validate_token
-
-router = APIRouter(prefix="/api/v1/registration")
+from fastapi import HTTPException, BackgroundTasks, APIRouter
+from reddevil.core import RdException
 
 from cocoon.registration import (
     Registration,
@@ -18,7 +14,6 @@ from cocoon.registration import (
     IdReply,
     confirm_registration,
     create_registration,
-    get_registration,
     get_registrations,
     get_photo,
     lookup_idbel,
@@ -28,9 +23,10 @@ from cocoon.registration import (
     upload_photo,
 )
 
+router = APIRouter(prefix="/api/v1/registration")
 logger = logging.getLogger(__name__)
 
-# vk
+#
 
 
 @router.get("", response_model=List[RegistrationItem])

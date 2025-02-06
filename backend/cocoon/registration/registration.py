@@ -7,11 +7,7 @@ from datetime import datetime
 from fastapi import BackgroundTasks
 from fastapi.responses import Response
 from binascii import a2b_base64
-from httpx import (
-    TransportError,
-    DecodingError,
-    AsyncClient,
-)
+from httpx import AsyncClient, DecodingError, TransportError
 
 from reddevil.core import get_settings, RdBadRequest, RdNotFound
 from cocoon.registration import (
@@ -21,7 +17,6 @@ from cocoon.registration import (
     RegistrationItem,
     RegistrationUpdate,
     IdReply,
-    NatStatus,
 )
 
 
@@ -49,21 +44,19 @@ async def get_registrations(options: dict = None) -> list[RegistrationItem]:
     filter = options.copy() if options else {}
     filter["_model"] = filter.pop("_model", RegistrationItem)
     filter["_fieldlist"] = list(filter["_model"].model_fields.keys())
-    filter["event"] = "cocoon24"
     return [
         cast(RegistrationItem, x) for x in await DbRegistration.find_multiple(filter)
     ]
 
 
-async def get_registration(id: str, options: dict = {}) -> Registration:
+async def get_registration(id: str, options: dict | None = None) -> Registration:
     """
     get enrollments
     """
-    filter = options.copy()
+    filter = options.copy() if options else {}
     filter["_model"] = filter.pop("_model", Registration)
     filter["_fieldlist"] = list(filter["_model"].model_fields.keys())
     filter["id"] = id
-    filter["event"] = "cocoon24"
     enr = cast(Registration, await DbRegistration.find_single(filter))
     return enr
 
@@ -113,7 +106,7 @@ async def create_registration(ei: RegistrationIn) -> str:
     else:
         eidict = ei.model_dump()
         eidict.pop("idsub", None)
-        eidict["event"] = "Cocoon24"
+        eidict["event"] = ""
         enrid = await add_registration(eidict)
     meu = RegistrationUpdate()
     if ei.idbel:
@@ -125,7 +118,6 @@ async def create_registration(ei: RegistrationIn) -> str:
             meu.idclub = pl.idclub
             meu.last_name = pl.last_name
             meu.nationalitybel = pl.nationalitybel
-            meu.natstatus = pl.natstatus
             meu.ratingbel = pl.ratingbel
         except Exception as e:
             logger.info(f"lookup idbel failed {e}")
@@ -137,7 +129,6 @@ async def create_registration(ei: RegistrationIn) -> str:
             meu.first_name = pl.first_name
             meu.last_name = pl.last_name
             meu.nationalityfide = pl.nationalityfide
-            meu.natstatus = pl.natstatus
             meu.ratingfide = pl.ratingfide
         except Exception as e:
             logger.info(f"lookup idfide failed {e}")
@@ -173,7 +164,6 @@ async def lookup_idbel(idbel: str) -> IdReply:
         last_name=plyr["last_name"],
         nationalitybel=plyr["nationalitybel"],
         nationalityfide=plyr["nationalityfide"],
-        natstatus=NatStatus.unknown,
         ratingbel=plyr["natrating"],
         ratingfide=plyr["fiderating"],
         subconfirmed=False,
@@ -222,7 +212,6 @@ async def lookup_idfide(idfide: str) -> IdReply:
         last_name=plyr["last_name"],
         nationalitybel=belreply.nationalitybel if belreply else "",
         nationalityfide=plyr["nationalityfide"],
-        natstatus=NatStatus.unknown,
         ratingbel=belreply.ratingbel if belreply else 0,
         ratingfide=plyr["fiderating"],
         subconfirmed=False,
