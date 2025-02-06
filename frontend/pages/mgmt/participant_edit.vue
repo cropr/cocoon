@@ -77,7 +77,7 @@ async function create_pr() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("payment", "mgmt_create_participant_bjk_pr", {
+    reply = await $backend("payment", "mgmt_create_participant_pr", {
       id: idparticipant,
       token: mgmttoken.value,
     })
@@ -100,7 +100,7 @@ async function delete_pr() {
   if (confirm("Are you sure to delete the linked payment request")) {
     showLoading(true)
     try {
-      reply = await $backend("payment", "mgmt_delete_participant_bjk_pr", {
+      reply = await $backend("payment", "mgmt_delete_participant_pr", {
         id: idparticipant,
         token: mgmttoken.value,
       })
@@ -124,7 +124,7 @@ async function getParticipant() {
   // showLoading(true)
   try {
     console.log("getting participant", idparticipant)
-    reply = await $backend("participant", "mgmt_get_participant_bjk", {
+    reply = await $backend("participant", "mgmt_get_participant", {
       id: idparticipant,
       token: mgmttoken.value,
     })
@@ -169,7 +169,7 @@ async function saveParticipant() {
   showLoading(true)
 
   try {
-    await $backend("participant", "mgmt_update_participant_bjk", {
+    await $backend("participant", "mgmt_update_participant", {
       id: idparticipant,
       participant: {
         category: par.value.category,
@@ -201,7 +201,7 @@ async function upload_photo() {
   photodataurl = photosrc.value.getCroppedCanvas({ width: 160 }).toDataURL()
   console.log("Uploading foto", photodataurl)
   try {
-    reply = await $backend("participant", "upload_photo_bjk", {
+    reply = await $backend("participant", "upload_photo", {
       photo: photodataurl,
       id: par.value.id,
     })
