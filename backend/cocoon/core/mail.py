@@ -82,7 +82,7 @@ def test_mail():
 
 
 def sendemail_no_attachments(mp: MailParams, context: dict, name: str = ""):
-    tmpl = env.get_template(mp.template.format(locale=context["locale"]))
+    tmpl = env.get_template(mp.template.format(locale=context.get("locale", "en")))
     markdowntext = tmpl.render(**context)
     htmltext = f"{markdownstyle} {md.convert(markdowntext)}"
     try:

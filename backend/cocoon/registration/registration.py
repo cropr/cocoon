@@ -258,7 +258,7 @@ def sendemail_registration(reg: Registration) -> None:
     settings = get_settings()
     emails = [reg.emailplayer]
     mp = MailParams(
-        subject="Registration Cocoon",
+        subject="Registration Cocoon 2025",
         sender=settings.EMAIL["sender"],
         receiver=",".join(emails),
         template="mailregistration_en.md",
@@ -283,7 +283,7 @@ def sendemail_confirmationreq(enr: Registration) -> None:
         template="mailenrollment_vk_{locale}.md",
         locale=enr.locale,
         attachments=[],
-        bcc=settings.EMAIL["bcc_enrollment"],
+        bcc=settings.EMAIL.get("bcc_registration"),
     )
     edict = enr.model_dump()
     edict["category"] = edict["category"].value

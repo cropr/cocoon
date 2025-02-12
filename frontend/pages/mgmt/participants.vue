@@ -157,7 +157,7 @@ onMounted(async () => {
   <v-container>
     <SnackbarMessage ref="refsnackbar" />
     <ProgressLoading ref="refloading" />
-    <h1>Management Particpants Cocoon 2025</h1>
+    <h1>Management Participants Cocoon 2025</h1>
     <v-data-table
       :headers="headers"
       :items="participants"

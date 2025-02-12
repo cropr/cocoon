@@ -7,8 +7,7 @@ EMAIL = {
     "host": "localhost",
     "port": "1025",
     "sender": "noreply@",
-    "bcc_reservation": "ruben.decrop@gmail.com,floreal@cocoon.be",
-    "bcc_enrollment": "ruben.decrop@gmail.com,luc.cornet@cocoon.be",
+    "bcc_registration": "ruben.decrop@gmail.com",
 }
 
 FILESTORE = {
