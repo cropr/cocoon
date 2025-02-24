@@ -102,7 +102,7 @@ SECRETS = {
 
 SECRETS_PATH = Path(os.environ.get("SECRETS_PATH", "./shared/secrets"))
 
-TEMPLATES_PATH = Path(os.environ.get("TEMPLATES_PATH", "./cocoon/templates"))
+TEMPLATES_PATH = Path(os.environ.get("TEMPLATES_PATH", "./backend/cocoon/templates"))
 
 TOKEN = {
     "timeout": 180,  # timeout in minutes

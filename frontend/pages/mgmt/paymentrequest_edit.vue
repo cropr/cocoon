@@ -237,6 +237,7 @@ onMounted(async () => {
         <v-row>
           <v-col cols="12" sm="6">
             <p>Reason: {{ prq.reason }}</p>
+            <p>Message: {{ prq.paymessage }}</p>
             <p>Email sent: {{ prq.sentdate }}</p>
             <v-text-field v-model="prq.last_name" label="Last name" />
             <v-text-field v-model="prq.first_name" label="First name" />
