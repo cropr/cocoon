@@ -4,7 +4,7 @@ EMAIL = {
     "backend": "SMTP",
     "host": "maildev.decrop.net",
     "port": "1025",
-    "bcc_registration": "cocoon@kosk.be,ruben.decrop@gmail.com",
+    "bcc_registration": "ruben.decrop@gmail.com",
     "sender": "noreply@kosk.be",
 }
 

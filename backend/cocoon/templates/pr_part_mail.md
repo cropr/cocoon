@@ -1,6 +1,6 @@
-### Payment request enrollment VK 2024
+### Payment request for registration to Cocoon 2025
 
-### Enrollment
+### Registration
 
 | Description | Quantity | Unit | Total |
 |:-------------|:------:|--------:|--------:|
