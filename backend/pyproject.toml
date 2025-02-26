@@ -75,6 +75,14 @@ shell = """
 """
 help = "run yarn in frontend"
 
+[tool.poe.tasks.fe_generate]
+shell = """ 
+    pushd frontend
+    API_URL=https://cocoon.kosk.be/ yarn generate
+    popd
+"""
+help = "run yarn in frontend"
+
 [tool.poe.tasks.fe_run]
 shell = """ 
     pushd frontend
