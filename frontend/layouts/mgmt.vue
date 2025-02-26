@@ -21,10 +21,9 @@ useHead({
       <v-list>
         <v-list-item @click="goto('overview')" title="Overview" />
         <v-list-item @click="goto('pages')" title="Pages" />
-        <v-list-item @click="goto('paymentrequests')" title="Payment Requests" />
         <v-list-item @click="goto('registrations')" title="Registrations" />
         <v-list-item @click="goto('participants')" title="Participants" />
-        <v-list-item @click="goto('logout')" title="Logout" />
+        <v-list-item @click="goto('paymentrequests')" title="Payment Requests" />
       </v-list>
     </VNavigationDrawer>
     <VAppBar color="deep-purple darken-1" dark>

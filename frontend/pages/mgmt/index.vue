@@ -1,81 +1,56 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import * as jose from "jose";
-import { usePersonStore } from "@/store/person";
-import { storeToRefs } from "pinia";
+import { ref, onMounted } from "vue"
+import * as jose from "jose"
+import { usePersonStore } from "@/store/person"
+import { storeToRefs } from "pinia"
+import { useOneTap } from "vue3-google-signin"
 
 // stores
-const personstore = usePersonStore();
-const { person } = storeToRefs(personstore);
+const personstore = usePersonStore()
+const { person } = storeToRefs(personstore)
 
-// datamodel
-const wrong_domain = ref(false);
+// model
+const authenticated = ref(false)
 
-async function checkAuth() {
-  console.log("checking if auth is present so we can go to overview");
-  if (person.value.credentials.length > 0) {
-    if (person.value.email.endsWith("@kosk.be")) {
-      navigateTo("/mgmt/overview");
-    } else {
-      wrong_domain.value = true;
-    }
-  }
-}
-
-function handleGoogle(resp) {
-  console.log("handling google");
-  wrong_domain.value = false;
-  const payload = jose.decodeJwt(resp.credential);
-  console.log("decoded", payload);
-  personstore.updatePerson({
-    credentials: resp.credential,
-    user: payload.given_name,
-    email: payload.email,
-  });
-  checkAuth();
-}
-
-function setupGoogle() {
-  console.log("Setup google sign in");
-  const reply = google.accounts.id.initialize({
-    client_id: "899786740417-dhtk8pilvkhkne3ht3c6ecbnm0619ijm.apps.googleusercontent.com",
-    callback: handleGoogle,
-    prompt_parent_id: "parent_id",
-  });
-  console.log("initialize:", reply);
-  const prompt = google.accounts.id.prompt((notif) => {
-    console.log("notif", notif);
-    if (notif.isNotDisplayed() || notif.isSkippedMoment()) {
-      document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-      google.accounts.id.prompt();
-    }
-  });
-  console.log("prompt", prompt);
-  console.log("Setup google sign in completed");
-}
+// google one tap
+useOneTap({
+  onSuccess: (resp) => {
+    console.log("Success:", resp)
+    const payload = jose.decodeJwt(resp.credential)
+    personstore.updatePerson({
+      credentials: resp.credential,
+      user: payload.name,
+      email: payload.email,
+    })
+    authenticated.value = true
+  },
+  onError: () => console.error("Error with One Tap Login"),
+})
 
 useHead({
   title: "Management Login",
-});
+})
 
 definePageMeta({
   layout: "mgmt",
-});
-
-onMounted(() => {
-  checkAuth();
-  setupGoogle();
-});
+})
 </script>
 
 <template>
-  <VContainer>
-    <p>Management Cocoon</p>
-    <p>
-      This part of the site is only accessible for people with a valid @kosk.be email
-      address
-    </p>
-    <div id="parent_id" />
-    <v-alert error v-show="wrong_domain">Invalid domain</v-alert>
-  </VContainer>
+  <v-container class="markdowncontent">
+    <h1>Management Cocoon 2025</h1>
+    <div v-if="!authenticated">
+      <p>Waiting for authorization</p>
+    </div>
+    <ul v-if="authenticated">
+      <li>Managing the <NuxtLink to="/mgmt/pages">Pages</NuxtLink></li>
+      <li>Managing the <NuxtLink to="/mgmt/registrations">Registrations</NuxtLink></li>
+      <li>Managing the <NuxtLink to="/mgmt/participants">Participants</NuxtLink></li>
+      <li>
+        Managing the <NuxtLink to="/mgmt/paymentrequests">Payment Requests</NuxtLink>
+      </li>
+    </ul>
+  </v-container>
 </template>
+
+// "899786740417-dhtk8pilvkhkne3ht3c6ecbnm0619ijm.apps.googleusercontent.com",

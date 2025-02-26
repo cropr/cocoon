@@ -3,36 +3,6 @@ import axios from "axios"
 const prefix = "/api/v1/payment"
 
 export default {
-  // lodging
-  mgmt_create_lodging_pr: async function (options) {
-    const { token, id } = options
-    return await axios.post(
-      `${prefix}/lodging_pr/${id}`,
-      {},
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    )
-  },
-  mgmt_delete_lodging_pr: async function (options) {
-    const { token, id } = options
-    return await axios.delete(`${prefix}/lodging_pr/${id}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-  },
-  mgmt_update_lodging_pr: async function (options) {
-    const { token, id, prq } = options
-    return await axios.put(`${prefix}/lodging_pr/${id}`, prq, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-  },
-
   mgmt_create_participant_pr: async function (options) {
     const { token, id } = options
     return await axios.post(
