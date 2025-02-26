@@ -11,7 +11,7 @@
 ### Payment
 
 Please transfer the amount of {{ totalprice }} € to the account of KOSK Cocoon
-BE33 0017 5924 5146 with the structured communication {{ paymessage }} within 7 days.
+BE43 3632 4366 9801 with the structured communication {{ paymessage }} within 7 days.
 
 If you would like an invoice in the name of a VAT payer, please contact us as soon as possible
 to reply to this e-mail stating the VAT details of the party concerned:

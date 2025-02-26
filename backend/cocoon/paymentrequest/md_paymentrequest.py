@@ -102,6 +102,8 @@ class PaymentRequestItem(BaseModel):
     number: int | None = None
     paymessage: str | None = None
     paynumber: int | None = None
+    paydate: str | None = None
+    paystatus: bool = False
     reason: str | None = None
     totalprice: float | None = None  # a Decimal
     sentdate: str | None = None

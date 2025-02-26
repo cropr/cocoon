@@ -13,3 +13,6 @@ dist/
 .vscode/
 .DS_Store
 shared/secrets/
+
+# idx
+.idx/.data

@@ -2,16 +2,29 @@
 
 ## Front End
 
-- cd cocoon_frontend
-- yarn dev
+Initial setup: 
+```
+cd frontend; yarn ; cd ..
+```
 
-
+Launch the frontend:
+```
+poe fe_run
+```
 ## Back End
 
-- cd cocoon_backend
-- ./launchlocal
+Initial setup
 
-# Deploymemnt Settings cocoon website
+```
+poetry install
+```
+
+Launch the backend
+
+```
+poe be_run
+```
+# Deployment Settings cocoon website
 
 ## App Engine
 
@@ -26,7 +39,7 @@
   - Javascript origin 1: "https://cocoon.kosk.be"
   - Javascript origin 2: "http://localhost:3000"
   - Javascript origin 2: "http://localhost"
-- Copy Client ID to  backend/app.yaml and to frontend/pages/mgmt/mgmt.index and to backend/cocoon/settings.py
+- Copy Client ID to  backend/app.yaml and to frontend/nux.config.js and to backend/cocoon/settings.py
 
 ## Send email
 
@@ -48,25 +61,15 @@
 
 ## Upload new version of application 
 
-In frontend directory
+Generate the new frontend (if changed)
 
-```bash
-API_URL=https://cocoon.kosk.be/ yarn generate
-gcloud app deploy
+```
+poe fe_generate
 ```
 
-In backend directory
-
-```bash
-gcloud app deploy
+Deploy a new version
 ```
-
-## 1 time actions after 1ste version app is uploaded
-
-in root directory
-
-```bash
-gcloud app dispatch.yml
+poe deploy
 ```
 
 For the mapping of cocoon.kosk.be go to https://console.cloud.google.com/appengine/settings/domains/add?project=cocoon-kosk

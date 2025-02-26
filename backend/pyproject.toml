@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Cocoon"
-version = "1.0.3"
+version = "1.1.0"
 description = "cocoon backend"
 authors = ["Ruben Decrop <ruben@kosk.be>"]
 
@@ -15,7 +15,7 @@ gunicorn = "^21.2.0"
 python-dotenv = "^1.0.1"
 openpyxl = "^3.1.2"
 asyncssh = "^2.14.2"
-reddevil = {path = "libs/reddevil-3.3.8-py3-none-any.whl"}
+reddevil = {path = "libs/reddevil-3.4.1-py3-none-any.whl"}
 
 [tool.poetry.group.dev.dependencies]
 black = "^23"
@@ -37,3 +37,57 @@ unfixable = []
 
 [tool.ruff.lint.per-file-ignores]
 "**/__init__.py" = ["E402"]
+
+
+[tool.poe.tasks.be_build]
+shell = """
+    poetry lock
+    poetry install
+"""
+help = "build fastapi backend"
+
+
+[tool.poe.tasks.be_run]
+cmd = "poetry run uvicorn cocoon.main:app --reload"
+help = "run fastapi in backend"
+
+[tool.poe.tasks.deploy]
+shell = """
+    pushd backend
+    gcloud app deploy --quiet
+popd
+"""
+help = "deploy app on google cloud"
+
+
+[tool.poe.tasks.gcp_init]
+shell = """
+    gcloud config configurations activate cocoon
+    gcloud auth application-default login
+"""
+help = "activate GCP cocoon project"
+
+[tool.poe.tasks.fe_build]
+shell = """ 
+    pushd frontend
+    yarn 
+    popd
+"""
+help = "run yarn in frontend"
+
+[tool.poe.tasks.fe_generate]
+shell = """ 
+    pushd frontend
+    API_URL=https://cocoon.kosk.be/ yarn generate
+    popd
+"""
+help = "run yarn in frontend"
+
+[tool.poe.tasks.fe_run]
+shell = """ 
+    pushd frontend
+    yarn dev
+    popd
+"""
+help = "run yarn dev in frontend"
+

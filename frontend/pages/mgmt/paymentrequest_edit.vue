@@ -115,26 +115,25 @@ async function get_paymentrequest() {
   }
 }
 
-async function registerPayment() {
+async function savePayment() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("payment", "mgmt_update_lodging_pr", {
+    reply = await $backend("payment", "mgmt_update_participant_pr", {
       id: idpaymentrequest,
       prq: {
         remarks: prq.value.remarks,
         paystatus: prq.value.paystatus,
-        paydate: new Date().toISOString().substring(0, 10),
+        paydate: prq.value.paystatus ? new Date().toISOString().substring(0, 10) : "",
       },
       token: token.value,
     })
-    showSnackbar("Payment registered")
+    showSnackbar("Payment saved")
   } catch (error) {
-    console.error("register payment failed", error)
     if (error.code === 401) {
       router.push("/mgmt")
     } else {
-      showSnackbar("Registering payment failed: " + error.detail)
+      showSnackbar("Saving payment failed: " + error.detail)
     }
     return
   } finally {
@@ -222,17 +221,17 @@ onMounted(async () => {
       </v-tooltip>
     </v-row>
     <v-card class="my-3">
-      <v-card-title> Register payment </v-card-title>
+      <v-card-title> Payment status </v-card-title>
       <v-card-text>
         <v-switch v-model="prq.paystatus" label="Paid" color="deep-purple" />
         <v-textarea v-model="prq.remarks" rows="2" label="Remarks" />
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="registerPayment"> Register Payment </v-btn>
+        <v-btn @click="savePayment"> Save Payment </v-btn>
       </v-card-actions>
     </v-card>
     <v-card class="my-3">
-      <v-card-title> Properties </v-card-title>
+      <v-card-title> Payment request properties </v-card-title>
       <v-card-text>
         <v-row>
           <v-col cols="12" sm="6">
