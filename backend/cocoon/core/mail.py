@@ -3,7 +3,7 @@
 
 import logging
 from markdown2 import Markdown
-from jinja2 import FileSystemLoader, Environment
+from jinja2 import Environment, PackageLoader
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
@@ -17,9 +17,7 @@ from cocoon.core.common import get_common
 logger = logging.getLogger(__name__)
 settings = get_settings()
 md = Markdown(extras=["tables"])
-env = Environment(loader=FileSystemLoader(settings.TEMPLATES_PATH), trim_blocks=True)
-# common = get_common()
-# i18n = common["i18n"]
+env = Environment(loader=PackageLoader("cocoon"), trim_blocks=True)
 
 
 markdownstyle = """

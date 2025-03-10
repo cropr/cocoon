@@ -1,26 +1,26 @@
 <script setup>
-import { ref } from "vue";
+import { ref } from "vue"
 
 // communication with main tool page
-const emit = defineEmits(["changeStep"]);
-defineExpose({ setup });
+const emit = defineEmits(["changeStep"])
+defineExpose({ setup })
 
 // datamodel
-const gdpr_ok = ref("gdpr_ok");
-const step = 5;
+const gdpr_ok = ref("gdpr_ok")
+const step = 4
 
 function next() {
-  console.log("clicked next");
-  emit("changeStep", step + 1);
+  console.log("clicked next")
+  emit("changeStep", step + 1)
 }
 
 function prev() {
-  console.log("clicked prev");
-  emit("changeStep", step - 1);
+  console.log("clicked prev")
+  emit("changeStep", step - 1)
 }
 
 function setup(l) {
-  console.log("setup gdpr", l);
+  console.log("setup gdpr", l)
 }
 </script>
 <template>
@@ -36,10 +36,6 @@ function setup(l) {
             form
           </li>
           <li>KOSK will use the data for tournament purposes only</li>
-          <li>
-            KOSK will use the profile picture for your player badge and for identification
-            on the website
-          </li>
           <li>
             In any case KOSK will not leak any personal information to third parties.
           </li>

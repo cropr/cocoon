@@ -1,77 +1,77 @@
 <script setup>
-import { ref, computed } from "vue";
-import ProgressLoading from "@/components/ProgressLoading.vue";
-import SnackbarMessage from "@/components/SnackbarMessage.vue";
+import { ref, computed } from "vue"
+import ProgressLoading from "@/components/ProgressLoading.vue"
+import SnackbarMessage from "@/components/SnackbarMessage.vue"
 
-const runtimeConfig = useRuntimeConfig();
+const runtimeConfig = useRuntimeConfig()
 
 // communication
-const emit = defineEmits(["changeStep", "restart"]);
-defineExpose({ setup });
-const { $backend } = useNuxtApp();
+const emit = defineEmits(["changeStep", "restart"])
+defineExpose({ setup })
+const { $backend } = useNuxtApp()
 
 //  snackbar and loading widgets
-const refsnackbar = ref(null);
-let showSnackbar;
-const refloading = ref(null);
-let showLoading;
+const refsnackbar = ref(null)
+let showSnackbar
+const refloading = ref(null)
+let showLoading
 
 // datamodel member
-const birthyear = ref(null);
-const category = ref("");
-const first_name = ref("");
-const gender = ref(null);
-const idsub = ref("");
-const last_name = ref("");
-const nationalityfide = ref("");
+const birthyear = ref(null)
+const category = ref("")
+const first_name = ref("")
+const gender = ref(null)
+const idsub = ref("")
+const last_name = ref("")
+const nationalityfide = ref("")
 const photourl = computed(
   () => `${runtimeConfig.public.apiUrl}api/v1/registration/photo/${idsub.value}`
-);
-const isConfirmed = ref(false);
+)
+const isConfirmed = ref(false)
 
-const step = 6;
+const step = 5
 
 async function confirm() {
-  let reply;
-  showLoading(true);
+  let reply
+  showLoading(true)
   try {
     reply = await $backend("registration", "confirm_registration", {
       idsub: idsub.value,
-    });
+    })
   } catch (error) {
-    console.error("confirmation failed", error);
-    showSnackbar("Confirmation failed");
-    return;
+    console.error("confirmation failed", error)
+    showSnackbar("Confirmation failed")
+    return
   } finally {
-    showLoading(false);
+    showLoading(false)
   }
-  isConfirmed.value = true;
+  isConfirmed.value = true
 }
 
 function prev() {
-  emit("changeStep", step - 1);
+  emit("changeStep", step - 1)
 }
 
 function restart() {
-  isConfirmed.value = false;
-  emit("restart");
+  isConfirmed.value = false
+  emit("restart")
 }
 
 function setup(e) {
-  console.log("setup confirmation", e);
-  birthyear.value = e.birthyear;
-  category.value = e.category;
-  gender.value = e.gender;
-  idsub.value = e.idsub;
-  first_name.value = e.first_name;
-  nationalityfide.value = e.nationalityfide;
-  last_name.value = e.last_name;
+  console.log("setup confirmation", e)
+  birthyear.value = e.birthyear
+  category.value = e.category
+  gender.value = e.gender
+  idsub.value = e.idsub
+  first_name.value = e.first_name
+  nationalityfide.value = e.nationalityfide
+  last_name.value = e.last_name
 }
 
 onMounted(() => {
-  showSnackbar = refsnackbar.value.showSnackbar;
-  showLoading = refloading.value.showLoading;
-});
+  showSnackbar = refsnackbar.value.showSnackbar
+  showLoading = refloading.value.showLoading
+})
 </script>
 <template>
   <v-container>
@@ -81,9 +81,9 @@ onMounted(() => {
       <h2>Confirmation</h2>
     </v-row>
     <v-row>
-      <v-col cols="12" sm="4" lg="3">
+      <!-- <v-col cols="12" sm="4" lg="3">
         <v-img :src="photourl" width="160" />
-      </v-col>
+      </v-col> -->
       <v-col cols="12" sm="4" lg="3">
         <div>
           Full name: <b>{{ last_name }}, {{ first_name }}</b>

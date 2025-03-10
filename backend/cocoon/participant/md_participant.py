@@ -58,8 +58,8 @@ class ParticipantDetail(BaseModel):
     the detailed participant model
     """
 
-    badgemimetype: str
-    badgelength: int
+    badgemimetype: str | None = ""
+    badgelength: int | None = 0
     birthyear: int
     category: ParticipantCategory
     chesstitle: str
