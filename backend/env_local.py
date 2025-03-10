@@ -4,7 +4,7 @@ COLORLOG = True
 
 EMAIL = {
     "backend": "SMTP",
-    "host": "localhost",
+    "host": "maildev.decrop.net",
     "port": "1025",
     "sender": "noreply@",
     "bcc_registration": "ruben.decrop@gmail.com",

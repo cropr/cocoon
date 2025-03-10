@@ -70,15 +70,6 @@ async def update_registration(
     filter = options.copy()
     filter["_model"] = filter.pop("_model", Registration)
     eudict = eu.model_dump(exclude_unset=True)
-    if "representative" in eudict:
-        eudict["representative"] = {
-            "emailattendant": eudict.pop("emailattendant", ""),
-            "emailparent": eudict.pop("emailparent", ""),
-            "fullnameattendant": eudict.pop("fullnameattendant", ""),
-            "fullnameparent": eudict.pop("fullnameparent", ""),
-            "mobileattendant": eudict.pop("mobileattendant", ""),
-            "mobileparent": eudict.pop("mobileparent", ""),
-        }
     mo = cast(
         Registration,
         await DbRegistration.update(id, eudict, filter),
@@ -277,7 +268,7 @@ def sendemail_confirmationreq(enr: Registration) -> None:
     settings = get_settings()
     emails = [enr.emailplayer]
     mp = MailParams(
-        subject="VK 2024",
+        subject="Payment Cocoon 2025",
         sender=settings.EMAIL["sender"],
         receiver=",".join(emails),
         template="mailenrollment_vk_{locale}.md",
