@@ -5,6 +5,7 @@ import SnackbarMessage from "@/components/SnackbarMessage.vue"
 
 // communication
 const { $backend } = useNuxtApp()
+const urlprefix = "/api/v1/participant"
 const router = useRouter()
 
 //  snackbar and loading widgets
@@ -30,7 +31,10 @@ async function getParticipants() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("participant", "get_participants", { enabled: 1 })
+    reply = await $backend({
+      method: "get",
+      url: `${urlprefix}/list?enabled=1`,
+    })
     participants.value = reply.data
   } catch (error) {
     console.error("getting participants failed", error)

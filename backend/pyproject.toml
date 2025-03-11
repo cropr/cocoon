@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "asyncssh>=2.21.0",
+    "beautifulsoup4>=4.13.4",
     "gunicorn>=23.0.0",
     "openpyxl>=3.1.5",
     "python-dotenv>=1.1.1",
@@ -13,8 +14,14 @@ dependencies = [
     "toml>=0.10.2",
 ]
 
-[tool.uv.sources]
-reddevil = { path = "libs/reddevil-3.4.1-py3-none-any.whl" }
+[tool.poetry.dependencies]
+python = "^3.11"
+toml = "^0.10.2"
+gunicorn = "^21.2.0"
+python-dotenv = "^1.0.1"
+openpyxl = "^3.1.2"
+asyncssh = "^2.14.2"
+reddevil = {path = "libs/reddevil-3.4.2-py3-none-any.whl"}
 
 [dependency-groups]
 dev = [

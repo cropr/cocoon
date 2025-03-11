@@ -51,11 +51,14 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend("accounts", "login", {
-      logintype: "google",
-      token: person.value.credentials,
-      username: null,
-      password: null,
+    reply = await $backend({
+      url: "/api/v1/accounts/anon/login",
+      data: {
+        logintype: "google",
+        token: person.value.credentials,
+        username: null,
+        password: null,
+      },
     })
   } catch (error) {
     console.log("cannot login", error)
@@ -72,9 +75,13 @@ async function create_pr() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("payment", "mgmt_create_registration_pr", {
-      id: idregistration,
-      token: token.value,
+    reply = await $backend({
+      url: "/api/v1/payment/participant_pr",
+      method: "post",
+      data: {
+        id: idregistration,
+        token: token.value,
+      },
     })
   } catch (error) {
     console.error("creating payment request", error)
@@ -88,30 +95,6 @@ async function create_pr() {
     showLoading(false)
   }
   router.push("/mgmt/paymentrequest_edit?id=" + reply.data)
-}
-
-async function delete_pr() {
-  let reply
-  if (confirm("Are you sure to delete the linked payment request")) {
-    showLoading(true)
-    try {
-      reply = await $backend("payment", "mgmt_delete_stay_pr", {
-        id: idregistration,
-        token: token.value,
-      })
-    } catch (error) {
-      console.error("deleting linked payment request", error)
-      if (error.code === 401) {
-        router.push("/mgmt")
-      } else {
-        showSnackbar("Deleting Paymentrequest failed" + error.detail)
-      }
-      return
-    } finally {
-      showLoading(false)
-    }
-    await getRegistration()
-  }
 }
 
 async function getRegistration() {
@@ -167,7 +150,6 @@ async function saveRegistration() {
         emailplayer: reg.value.emailplayer,
         mobileplayer: reg.value.mobileplayer,
       },
-      token: token.value,
     })
   } catch (error) {
     console.error("getting getRegistrations", error)

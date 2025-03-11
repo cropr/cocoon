@@ -2,11 +2,11 @@ import axios from "axios"
 import accounts from "@/api/accounts"
 import attendee from "@/api/attendee"
 import filestore from "@/api/filestore"
-import page from "@/api/page"
 import participant from "@/api/participant"
 import payment from "@/api/payment"
 import registration from "@/api/registration"
 import tournament from "@/api/tournament"
+import wagtail from "@/api/wagtail"
 
 axios.defaults.withCredentials = true
 
@@ -66,11 +66,11 @@ const factories = {
   accounts,
   attendee,
   filestore,
-  page,
   participant,
   payment,
   registration,
   tournament,
+  wagtail,
 }
 
 export default defineNuxtPlugin((nuxtApp) => {

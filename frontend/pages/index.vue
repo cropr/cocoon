@@ -1,6 +1,8 @@
 <script setup>
-import { ref, watch } from "vue"
-import showdown from "showdown"
+import { ref } from "vue"
+
+// communication
+const { $backend } = useNuxtApp()
 
 //snackbar progessloading
 import ProgressLoading from "@/components/ProgressLoading.vue"
@@ -10,23 +12,25 @@ let showSnackbar
 const refloading = ref(null)
 let showLoading
 
-const { $backend } = useNuxtApp()
-let page
 const pagetitle = ref("")
 const pagecontent = ref("")
+const pageintro = ref("")
 
-async function getContent() {
+async function getPage(slug) {
+  console.log("getPage", slug)
   showLoading(true)
   try {
-    const reply = await $backend("filestore", "anon_get_file", {
-      group: "pages",
-      name: "cocoon.md",
+    let reply = await $backend("wagtail", "get_page", {
+      slug: slug,
     })
-    page = useMarkdown(reply.data)
-    pagetitle.value = page.metadata.title
-    pagecontent.value = page.html
+    const page = reply.data
+    console.log("page", page)
+    pagetitle.value = page.title
+    pageintro.value = page.intro
+    pagecontent.value = page.body
   } catch (error) {
     showSnackbar("Page loading failed")
+    console.log("getPage error", error)
   } finally {
     showLoading(false)
   }
@@ -35,7 +39,7 @@ async function getContent() {
 onMounted(() => {
   showSnackbar = refsnackbar.value.showSnackbar
   showLoading = refloading.value.showLoading
-  getContent()
+  getPage("cocoon")
 })
 </script>
 
@@ -47,7 +51,8 @@ onMounted(() => {
   </v-container>
   <v-container>
     <h1>{{ pagetitle }}</h1>
-    <div v-html="pagecontent" class="markdowncontent"></div>
+    <h3>{{ pageintro }}</h3>
+    <div v-html="pagecontent"></div>
   </v-container>
 </template>
 
