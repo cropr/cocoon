@@ -62,30 +62,27 @@ axios.interceptors.response.use(
   }
 )
 
-const factories = {
-  accounts,
-  attendee,
-  filestore,
-  page,
-  participant,
-  payment,
-  registration,
-  tournament,
-}
-
 export default defineNuxtPlugin((nuxtApp) => {
   const runtimeConfig = useRuntimeConfig()
-  axios.defaults.baseURL = runtimeConfig.public.apiUrl
-  // console.log("$backend baseURL", axios.defaults.baseURL)
-  // nuxtApp.provide("backend")
   return {
     provide: {
-      backend: async function (fact, method, options) {
-        const f = factories[fact][method]
-        if (!f) {
-          console.log("$backend method not existing", fact, method)
-        }
-        return await f(options)
+      backend: async function (options) {
+        return await axios({
+          baseURL: runtimeConfig.public.apiUrl,
+          url: options.url,
+          method: options.method ? options.method : "get",
+          data: options.data ? options.data : {},
+          headers: options.headers ? options.headers : {},
+        })
+      },
+      cms: async function (options) {
+        return await axios({
+          baseURL: runtimeConfig.public.wagtailUrl,
+          url: options.url,
+          method: options.method ? options.method : "get",
+          data: options.data ? options.data : {},
+          headers: options.headers ? options.headers : {},
+        })
       },
     },
   }

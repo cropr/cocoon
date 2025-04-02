@@ -8,6 +8,7 @@ import { storeToRefs } from "pinia"
 
 // communication
 const { $backend } = useNuxtApp()
+
 const router = useRouter()
 
 //  snackbar and loading widgets
@@ -55,11 +56,15 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend("accounts", "login", {
-      logintype: "google",
-      token: person.value.credentials,
-      username: null,
-      password: null,
+    reply = await $backend({
+      url: "/api/v1/accounts/login",
+      method: "post",
+      data: {
+        logintype: "google",
+        token: person.value.credentials,
+        username: null,
+        password: null,
+      },
     })
   } catch (error) {
     console.log("cannot login", error)
@@ -76,8 +81,12 @@ async function create_prs() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("payment", "mgmt_create_participants_pr", {
-      token: token.value,
+    reply = await $backend({
+      method: "post",
+      url: "/api/v1/payment/participant_pr",
+      headers: {
+        Authorization: "Bearer " + token.value,
+      },
     })
   } catch (error) {
     console.error("creating all pr failed", error)
@@ -101,7 +110,13 @@ async function getParticipants() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("participant", "get_participants", {})
+    reply = await $backend({
+      url: "/api/v1/participant/list?enabled=1",
+      method: "get",
+      headers: {
+        Authorization: "Bearer " + token.value,
+      },
+    })
     participants.value = reply.data
   } catch (error) {
     console.error("getting participants failed", error)
@@ -120,8 +135,12 @@ async function importRegistrations() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("participant", "mgmt_import_registrations", {
-      token: token.value,
+    reply = await $backend({
+      method: "post",
+      url: "/api/v1/participant/import_registrations",
+      headers: {
+        Authorization: "Bearer " + token.value,
+      },
     })
   } catch (error) {
     console.log("import error", error)

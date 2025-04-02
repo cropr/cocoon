@@ -51,11 +51,14 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend("accounts", "login", {
-      logintype: "google",
-      token: person.value.credentials,
-      username: null,
-      password: null,
+    reply = await $backend({
+      url: "/api/v1/accounts/anon/login",
+      data: {
+        logintype: "google",
+        token: person.value.credentials,
+        username: null,
+        password: null,
+      },
     })
   } catch (error) {
     console.log("cannot login", error)
@@ -72,9 +75,13 @@ async function create_pr() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("payment", "mgmt_create_registration_pr", {
-      id: idregistration,
-      token: token.value,
+    reply = await $backend({
+      url: "/api/v1/payment/participant_pr",
+      method: "post",
+      data: {
+        id: idregistration,
+        token: token.value,
+      },
     })
   } catch (error) {
     console.error("creating payment request", error)
@@ -90,37 +97,16 @@ async function create_pr() {
   router.push("/mgmt/paymentrequest_edit?id=" + reply.data)
 }
 
-async function delete_pr() {
-  let reply
-  if (confirm("Are you sure to delete the linked payment request")) {
-    showLoading(true)
-    try {
-      reply = await $backend("payment", "mgmt_delete_stay_pr", {
-        id: idregistration,
-        token: token.value,
-      })
-    } catch (error) {
-      console.error("deleting linked payment request", error)
-      if (error.code === 401) {
-        router.push("/mgmt")
-      } else {
-        showSnackbar("Deleting Paymentrequest failed" + error.detail)
-      }
-      return
-    } finally {
-      showLoading(false)
-    }
-    await getRegistration()
-  }
-}
-
 async function getRegistration() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("registration", "mgmt_get_registration_bjk", {
-      id: idregistration,
-      token: token.value,
+    reply = await $backend({
+      method: "get",
+      url: "/api/v1/registration/" + idregistration,
+      headers: {
+        Authorization: "Bearer " + token.value,
+      },
     })
     readRegistration(reply.data)
   } catch (error) {
@@ -148,34 +134,39 @@ async function saveRegistration() {
   let reply
   showLoading(true)
   try {
-    await $backend("registration", "mgmt_update_registration_bjk", {
-      id: idregistration,
-      reg: {
-        first_name: reg.value.first_name,
-        last_name: reg.value.last_name,
-        idbel: reg.value.idbel,
-        idfide: reg.value.idfide,
-        category: reg.value.category,
-        gender: reg.value.gender,
-        birthyear: reg.value.birthyear,
-        locale: reg.value.locale,
-        confirmed: reg.value.confirmed,
-        remarks: reg.value.remarks,
-        enabled: reg.value.enabled,
-        ratingbel: reg.value.ratingbel,
-        ratingfide: reg.value.ratingfide,
-        emailplayer: reg.value.emailplayer,
-        mobileplayer: reg.value.mobileplayer,
-        representative: {
-          fullnameparent: reg.value.representative.fullnameparent,
-          emailparent: reg.value.representative.emailparent,
-          mobileparent: reg.value.representative.mobileparent,
-          fullnameattendant: reg.value.representative.fullnameattendant,
-          emailattendant: reg.value.representative.emailattendant,
-          mobileattendant: reg.value.representative.mobileattendant,
+    await $backend({
+      method: "put",
+      url: "/api/v1/registration/" + idregistration,
+      headers: {
+        Authorization: "Bearer " + token.value,
+      },
+      data: {
+        reg: {
+          first_name: reg.value.first_name,
+          last_name: reg.value.last_name,
+          idbel: reg.value.idbel,
+          idfide: reg.value.idfide,
+          category: reg.value.category,
+          gender: reg.value.gender,
+          birthyear: reg.value.birthyear,
+          locale: reg.value.locale,
+          confirmed: reg.value.confirmed,
+          remarks: reg.value.remarks,
+          enabled: reg.value.enabled,
+          ratingbel: reg.value.ratingbel,
+          ratingfide: reg.value.ratingfide,
+          emailplayer: reg.value.emailplayer,
+          mobileplayer: reg.value.mobileplayer,
+          representative: {
+            fullnameparent: reg.value.representative.fullnameparent,
+            emailparent: reg.value.representative.emailparent,
+            mobileparent: reg.value.representative.mobileparent,
+            fullnameattendant: reg.value.representative.fullnameattendant,
+            emailattendant: reg.value.representative.emailattendant,
+            mobileattendant: reg.value.representative.mobileattendant,
+          },
         },
       },
-      token: token.value,
     })
   } catch (error) {
     console.error("getting getRegistrations", error)

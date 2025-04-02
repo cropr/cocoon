@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block body_class %}
+    template-contentpage
+{% endblock body_class %}
+{% block content %}
+    <h1>{{ page.title }}</h1>
+    <div class="intro">{{ page.intro }}</div>
+    {{ page.body|richtext }}
+    <p>
+        <a href="{{ page.get_parent.url }}">Return to content overview</a>
+    </p>
+{% endblock content %}

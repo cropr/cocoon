@@ -1,6 +1,5 @@
 <script setup>
-import { ref, watch } from "vue"
-import showdown from "showdown"
+import { ref } from "vue"
 
 //snackbar progessloading
 import ProgressLoading from "@/components/ProgressLoading.vue"
@@ -10,32 +9,71 @@ let showSnackbar
 const refloading = ref(null)
 let showLoading
 
-const { $backend } = useNuxtApp()
-let page
+const { $cms } = useNuxtApp()
+let pages = {}
 const pagetitle = ref("")
 const pagecontent = ref("")
+const pageintro = ref("")
 
-async function getContent() {
+async function getPages() {
+  console.log("getPages")
   showLoading(true)
   try {
-    const reply = await $backend("filestore", "anon_get_file", {
-      group: "pages",
-      name: "cocoon.md",
+    let reply = await $cms({
+      method: "get",
+      url: "/apiwt/pages",
     })
-    page = useMarkdown(reply.data)
-    pagetitle.value = page.metadata.title
-    pagecontent.value = page.html
+    pages = reply.data.items
   } catch (error) {
     showSnackbar("Page loading failed")
+    console.log("getPages error", error)
+    return
   } finally {
     showLoading(false)
+  }
+  await findPage("cocoon-2025")
+}
+
+async function getPage(id) {
+  console.log("getPage", id)
+  showLoading(true)
+  try {
+    let reply = await $cms({
+      method: "get",
+      url: `/apiwt/pages/${id}/`,
+    })
+    const page = reply.data
+    console.log("page", page)
+    pagetitle.value = page.title
+    pageintro.value = page.intro
+    pagecontent.value = page.body
+  } catch (error) {
+    showSnackbar("Page loading failed")
+    console.log("getPage error", error)
+  } finally {
+    showLoading(false)
+  }
+}
+
+async function findPage(slug) {
+  console.log("findPage", slug)
+  let foundid = 0
+  pages.forEach((page) => {
+    if (page.meta.slug === slug) {
+      foundid = page.id
+    }
+  })
+  if (foundid) {
+    await getPage(foundid)
+  } else {
+    showSnackbar("Page not found")
   }
 }
 
 onMounted(() => {
   showSnackbar = refsnackbar.value.showSnackbar
   showLoading = refloading.value.showLoading
-  getContent()
+  getPages()
 })
 </script>
 
@@ -47,7 +85,8 @@ onMounted(() => {
   </v-container>
   <v-container>
     <h1>{{ pagetitle }}</h1>
-    <div v-html="pagecontent" class="markdowncontent"></div>
+    <h3>{{ pageintro }}</h3>
+    <div v-html="pagecontent"></div>
   </v-container>
 </template>
 

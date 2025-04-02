@@ -8,12 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.13"
 wagtail = "^6.4.1"
-django-dotenv = "^1.4.2"
-wagtail-font-awesome-svg = "^1.0.1"
-django-debug-toolbar = "^5.0.1"
-django-extensions = "^3.2.3"
-django-csp = "^3.8"
-dj-database-url = "^2.3.0"
+django-cors-headers = "^4.7.0"
 
 
 [build-system]

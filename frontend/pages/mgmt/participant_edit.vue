@@ -29,12 +29,6 @@ const { person } = storeToRefs(personstore)
 const idparticipant = route.query.id
 const par = ref({ payment_id: "" })
 const emails = ref("")
-const photourl = computed(() => {
-  return "https://cocoon.kosk.be/api/v1/participant/photo/" + (par.value.id || "")
-  // return "http://localhost:8000/api/v1/participant/photo/" + (par.value.id || "")
-})
-const photo = ref([])
-const photosrc = ref("")
 
 definePageMeta({
   layout: "mgmt",
@@ -59,11 +53,14 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend("accounts", "login", {
-      logintype: "google",
-      token: person.value.credentials,
-      username: null,
-      password: null,
+    reply = await $backend({
+      url: "/api/v1/accounts/login",
+      data: {
+        logintype: "google",
+        token: person.value.credentials,
+        username: null,
+        password: null,
+      },
     })
   } catch (error) {
     navigateTo("/mgmt")
@@ -77,9 +74,15 @@ async function create_pr() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("payment", "mgmt_create_participant_pr", {
-      id: idparticipant,
-      token: mgmttoken.value,
+    reply = await $backend({
+      url: "/api/v1/participant/participant_pr",
+      method: "post",
+      data: {
+        id: idparticipant,
+      },
+      headers: {
+        Authorization: "Bearer " + mgmttoken.value,
+      },
     })
   } catch (error) {
     console.error("creating payment request", error)
@@ -100,9 +103,12 @@ async function delete_pr() {
   if (confirm("Are you sure to delete the linked payment request")) {
     showLoading(true)
     try {
-      reply = await $backend("payment", "mgmt_delete_participant_pr", {
-        id: idparticipant,
-        token: mgmttoken.value,
+      reply = await $backend({
+        url: `/api/v1/participant/participant_pr/${idparticipant}`,
+        method: "delete",
+        headers: {
+          Authorization: "Bearer " + mgmttoken.value,
+        },
       })
     } catch (error) {
       console.error("deleting linked payment request", error)
@@ -124,9 +130,12 @@ async function getParticipant() {
   // showLoading(true)
   try {
     console.log("getting participant", idparticipant)
-    reply = await $backend("participant", "mgmt_get_participant", {
-      id: idparticipant,
-      token: mgmttoken.value,
+    reply = await $backend({
+      method: "get",
+      url: "/api/v1/participant/" + idparticipant,
+      headers: {
+        Authorization: "Bearer " + mgmttoken.value,
+      },
     })
     readParticipant(reply.data)
   } catch (error) {
@@ -169,16 +178,21 @@ async function saveParticipant() {
   showLoading(true)
 
   try {
-    await $backend("participant", "mgmt_update_participant", {
-      id: idparticipant,
-      participant: {
-        category: par.value.category,
-        emails: emails.value.split(","),
-        enabled: par.value.enabled,
-        ratingbel: par.value.ratingbel,
-        ratingfide: par.value.ratingfide,
+    await $backend({
+      method: "put",
+      url: "/api/v1/participant/" + idparticipant,
+      data: {
+        participant: {
+          category: par.value.category,
+          emails: emails.value.split(","),
+          enabled: par.value.enabled,
+          ratingbel: par.value.ratingbel,
+          ratingfide: par.value.ratingfide,
+        },
       },
-      token: mgmttoken.value,
+      headers: {
+        Authorization: "Bearer " + mgmttoken.value,
+      },
     })
   } catch (error) {
     console.error("saving getParticipant", error)
@@ -193,29 +207,6 @@ async function saveParticipant() {
   }
   console.log("save successful")
   showSnackbar("Participant saved")
-}
-
-async function upload_photo() {
-  let reply, photodataurl
-  showLoading(true)
-  photodataurl = photosrc.value.getCroppedCanvas({ width: 160 }).toDataURL()
-  console.log("Uploading foto", photodataurl)
-  try {
-    reply = await $backend("participant", "upload_photo", {
-      photo: photodataurl,
-      id: par.value.id,
-    })
-    console.log("upload reply", reply)
-  } catch (error) {
-    console.log("error reply", error)
-    showSnackbar(error.message)
-  } finally {
-    console.log("finally")
-    showLoading(false)
-  }
-  console.log("uploaded")
-  photo.value = []
-  photosrc.value = ""
 }
 
 onMounted(async () => {
@@ -279,37 +270,6 @@ onMounted(async () => {
       </v-card-text>
       <v-card-actions>
         <v-btn @click="saveParticipant"> Save </v-btn>
-      </v-card-actions>
-    </v-card>
-
-    <v-card class="my-3">
-      <v-card-title class="mt-2"> Photo </v-card-title>
-      <v-card-text>
-        <v-row>
-          <v-col cols="2">
-            <img :src="photourl" />
-          </v-col>
-          <v-col cols="10">
-            <v-file-input label="Badge" v-model="photo" @update:modelValue="handleFile" />
-            <vue-cropper
-              ref="photosrc"
-              :view-mode="2"
-              drag-mode="crop"
-              :auto-crop-area="0.5"
-              :background="true"
-              src=""
-              alt=" "
-              :aspect-ratio="0.8"
-              preview="#photoresult"
-              :img-style="{ height: '400px' }"
-            />
-            <h4>Result</h4>
-            <div id="photoresult" ref="photoresult" class="photoresult" />
-          </v-col>
-        </v-row>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn @click="upload_photo"> Upload </v-btn>
       </v-card-actions>
     </v-card>
 
