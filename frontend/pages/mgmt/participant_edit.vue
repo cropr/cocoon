@@ -28,13 +28,6 @@ const { person } = storeToRefs(personstore)
 // datamodel
 const idparticipant = route.query.id
 const par = ref({ payment_id: "" })
-const emails = ref("")
-const photourl = computed(() => {
-  return "https://cocoon.kosk.be/api/v1/participant/photo/" + (par.value.id || "")
-  // return "http://localhost:8000/api/v1/participant/photo/" + (par.value.id || "")
-})
-const photo = ref([])
-const photosrc = ref("")
 
 definePageMeta({
   layout: "mgmt",
@@ -146,18 +139,8 @@ async function gotoPaymentrequest(id) {
   router.push("/mgmt/paymentrequest_edit?id=" + id)
 }
 
-function handleFile(event) {
-  const reader = new FileReader()
-  reader.onload = (event) => {
-    console.log("handle file onload", event, photo.value)
-    photosrc.value.replace(event.target.result)
-  }
-  reader.readAsDataURL(event[0])
-}
-
 function readParticipant(participant) {
   par.value = { ...participant }
-  emails.value = par.value.emails.join(",")
 }
 
 async function refresh() {
@@ -173,8 +156,9 @@ async function saveParticipant() {
       id: idparticipant,
       participant: {
         category: par.value.category,
-        emails: emails.value.split(","),
+        emailplayer: par.value.emailplayer,
         enabled: par.value.enabled,
+        mobileplayer: par.value.mobileplayer,
         ratingbel: par.value.ratingbel,
         ratingfide: par.value.ratingfide,
       },
@@ -193,29 +177,6 @@ async function saveParticipant() {
   }
   console.log("save successful")
   showSnackbar("Participant saved")
-}
-
-async function upload_photo() {
-  let reply, photodataurl
-  showLoading(true)
-  photodataurl = photosrc.value.getCroppedCanvas({ width: 160 }).toDataURL()
-  console.log("Uploading foto", photodataurl)
-  try {
-    reply = await $backend("participant", "upload_photo", {
-      photo: photodataurl,
-      id: par.value.id,
-    })
-    console.log("upload reply", reply)
-  } catch (error) {
-    console.log("error reply", error)
-    showSnackbar(error.message)
-  } finally {
-    console.log("finally")
-    showLoading(false)
-  }
-  console.log("uploaded")
-  photo.value = []
-  photosrc.value = ""
 }
 
 onMounted(async () => {
@@ -266,7 +227,8 @@ onMounted(async () => {
             <v-text-field v-model="par.last_name" label="Last name" />
             <v-text-field v-model="par.first_name" label="First name" />
             <v-switch v-model="par.enabled" label="Enabled" color="deep-purple" />
-            <v-text-field v-model="emails" label="Emails" />
+            <v-text-field v-model="par.emailplayer" label="Email player" />
+            <v-text-field v-model="par.mobileplayer" label="Mobile player" />
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field v-model="par.ratingbel" label="ELO BEL" />
@@ -279,37 +241,6 @@ onMounted(async () => {
       </v-card-text>
       <v-card-actions>
         <v-btn @click="saveParticipant"> Save </v-btn>
-      </v-card-actions>
-    </v-card>
-
-    <v-card class="my-3">
-      <v-card-title class="mt-2"> Photo </v-card-title>
-      <v-card-text>
-        <v-row>
-          <v-col cols="2">
-            <img :src="photourl" />
-          </v-col>
-          <v-col cols="10">
-            <v-file-input label="Badge" v-model="photo" @update:modelValue="handleFile" />
-            <vue-cropper
-              ref="photosrc"
-              :view-mode="2"
-              drag-mode="crop"
-              :auto-crop-area="0.5"
-              :background="true"
-              src=""
-              alt=" "
-              :aspect-ratio="0.8"
-              preview="#photoresult"
-              :img-style="{ height: '400px' }"
-            />
-            <h4>Result</h4>
-            <div id="photoresult" ref="photoresult" class="photoresult" />
-          </v-col>
-        </v-row>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn @click="upload_photo"> Upload </v-btn>
       </v-card-actions>
     </v-card>
 
@@ -338,21 +269,5 @@ onMounted(async () => {
 .dropbox {
   width: 100%;
   background-color: aliceblue;
-}
-
-.photosrc {
-  overflow: hidden;
-  width: 100%;
-  height: 400px;
-  border: 1px dashed #808080;
-  background-color: #d3d3d3;
-}
-
-.photoresult {
-  overflow: hidden;
-  position: relative;
-  text-align: center;
-  width: 160px;
-  height: 200px;
 }
 </style>

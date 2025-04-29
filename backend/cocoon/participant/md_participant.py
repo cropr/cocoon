@@ -24,14 +24,11 @@ class ParticipantDB(BaseModel):
     is normally not exposed
     """
 
-    badgemimetype: str
-    badgeimage: bytes
-    badgelength: int
     birthyear: int
     category: ParticipantCategory
     chesstitle: str
     enabled: bool
-    emails: list[str]
+    emailplayer: str
     first_name: str
     gender: Gender
     idbel: str
@@ -39,6 +36,7 @@ class ParticipantDB(BaseModel):
     idfide: str | None
     locale: str
     last_name: str
+    mobileplayer: str
     nationalityfide: str | None
     payment_id: str | None = None
     present: datetime | None
@@ -58,21 +56,19 @@ class ParticipantDetail(BaseModel):
     the detailed participant model
     """
 
-    badgemimetype: str | None = ""
-    badgelength: int | None = 0
     birthyear: int
     category: ParticipantCategory
     chesstitle: str
     enabled: bool
-    emails: list[str]
+    emailplayer: str = ""
     first_name: str
     gender: Gender
     id: str
     idbel: str
     idclub: str | None
     idfide: str | None
-    locale: str
     last_name: str
+    mobileplayer: str = ""
     nationalityfide: str | None
     payment_id: str | None = None
     present: datetime | None
@@ -95,7 +91,7 @@ class ParticipantUpdate(BaseModel):
     category: ParticipantCategory | None = None
     chesstitle: str | None = None
     enabled: bool | None = None
-    emails: list[str] | None = None
+    emailplayer: str | None = None
     first_name: str | None = None
     gender: Gender | None = None
     idbel: str | None = None
@@ -103,6 +99,7 @@ class ParticipantUpdate(BaseModel):
     idfide: str | None = None
     locale: str | None = None
     last_name: str | None = None
+    mobileplayer: str | None = None
     nationalityfide: str | None = None
     payment_id: str | None = None
     present: datetime | None = None
@@ -122,14 +119,14 @@ class Participant(BaseModel):
     category: ParticipantCategory | None = None
     chesstitle: str | None = None
     enabled: bool | None = None
-    emails: list[str] | None = None
+    emailplayer: str | None = None
     first_name: str | None = None
     gender: Gender | None = None
     idbel: str | None = None
     idclub: str | None = None
     idfide: str | None = None
-    locale: str | None = None
     last_name: str | None = None
+    mobileplayer: str | None = None
     nationalityfide: str | None = None
     payment_id: str | None = None
     present: datetime | None = None

@@ -98,6 +98,7 @@ class RegistrationItem(BaseModel):
     confirmed: bool | None = False
     chesstitle: str | None = None
     confirmation_email: datetime | None = None
+    emailplayer: str | None = None
     enabled: bool = True
     first_name: str | None = None
     gender: Gender | None = None
@@ -106,6 +107,8 @@ class RegistrationItem(BaseModel):
     idclub: str | None = None
     idfide: str | None = None
     last_name: str | None = None
+    locale: str | None = None
+    mobileplayer: str | None = None
     nationalityfide: str | None = None
     ratingbel: int | None = 0
     ratingfide: int | None = 0
