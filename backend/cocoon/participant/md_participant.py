@@ -28,6 +28,7 @@ class ParticipantDB(BaseModel):
     category: ParticipantCategory
     chesstitle: str
     enabled: bool
+    emails: list[str] | None = None
     emailplayer: str
     first_name: str
     gender: Gender
@@ -84,9 +85,6 @@ class ParticipantUpdate(BaseModel):
     participant update model
     """
 
-    badgemimetype: str | None = None
-    badgeimage: bytes | None = None
-    badgelength: int | None = None
     birthyear: int | None = None
     category: ParticipantCategory | None = None
     chesstitle: str | None = None
@@ -113,8 +111,6 @@ class Participant(BaseModel):
     the participant model
     """
 
-    badgemimetype: str | None = None
-    badgelength: int | None = None
     birthyear: int | None = None
     category: ParticipantCategory | None = None
     chesstitle: str | None = None
@@ -141,10 +137,11 @@ class ParticipantItem(BaseModel):
     validator for public view of a enrollment
     """
 
-    badgelength: int | None = 0
     birthyear: int
     category: ParticipantCategory
-    chesstitle: str | None
+    chesstitle: str | None = ""
+    emails: list[str] | None = None
+    emailplayer: str | None = ""
     enabled: bool | None = True
     first_name: str
     gender: Gender
@@ -153,6 +150,7 @@ class ParticipantItem(BaseModel):
     idclub: str | None
     idfide: str | None
     last_name: str
+    mobileplayer: str | None = ""
     nationalityfide: str | None = "BEL"
     payment_id: str | None = None
     ratingbel: int | None = 0
