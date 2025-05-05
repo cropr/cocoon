@@ -151,9 +151,12 @@ def calc_pricedetails_par(
     calculates cost for pricedetails
     """
     logger.info(f"Calculation details for participant {par.first_name} {par.last_name}")
-    amount = 35 if par.birthyear > 2004 else 55
-    if par.chesstitle != "":
-        logger.info("Please check titles")
+    if par.chesstitle in ["GM", "WGM", "IM", "WIM"]:
+        amount = 0
+    elif par.chesstitle in ["FM", "WFM"]:
+        amount = 35
+    else:
+        amount = 35 if par.birthyear > 2004 else 55
     admincost = 10
     total = amount
     details = [

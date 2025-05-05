@@ -17,6 +17,8 @@ let showLoading
 const participants = ref([])
 const search = ref("")
 const headers = [
+  { title: "N", value: "index" },
+  { title: "Title", value: "chesstitle", sortable: true },
   { title: "Last Name", value: "last_name", sortable: true },
   { title: "First Name", value: "first_name", sortable: true },
   { title: "Elo FIDE", value: "ratingfide", sortable: true },
@@ -78,6 +80,11 @@ onMounted(async () => {
             </v-row>
           </v-card-title>
         </v-card>
+      </template>
+      <template v-slot:item.index="{ index }">
+        <span>
+          {{ index + 1 }}
+        </span>
       </template>
 
       <template #no-data> No participants found. </template>
