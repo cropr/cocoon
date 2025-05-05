@@ -112,3 +112,9 @@ for route in app.routes:
 
 # importing test endpoints
 import cocoon.tst_endpoints  # noqa F401
+
+if settings.COCOON_MODE == "prodtest":
+    from cocoon.adhoc import router  # noqa F401
+
+    app.include_router(router)
+    logger.info("adhoc commands loaded")

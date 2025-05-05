@@ -49,16 +49,16 @@ async def get_registrations(options: dict = None) -> list[RegistrationItem]:
     ]
 
 
-async def get_registration(id: str, options: dict | None = None) -> Registration:
+async def get_registration(id: str, options: dict | None = None) -> RegistrationItem:
     """
     get enrollments
     """
     filter = options.copy() if options else {}
-    filter["_model"] = filter.pop("_model", Registration)
+    filter["_model"] = filter.pop("_model", RegistrationItem)
     filter["_fieldlist"] = list(filter["_model"].model_fields.keys())
     filter["id"] = id
-    enr = cast(Registration, await DbRegistration.find_single(filter))
-    return enr
+    reg = cast(RegistrationItem, await DbRegistration.find_single(filter))
+    return reg
 
 
 async def update_registration(
@@ -177,7 +177,8 @@ async def lookup_idfide(idfide: str) -> IdReply:
                 belreply = None
     except DecodingError:
         raise RdBadRequest(description="DecodingErrorKBSB")
-    except TransportError:
+    except TransportError as e:
+        logger.exception(f"TransportErrorKBSB {e}")
         raise RdBadRequest(description="TransportErrorKBSB")
     url = api_lookupfide.format(id=idfide)
     try:

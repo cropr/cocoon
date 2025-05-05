@@ -26,7 +26,7 @@ const { person } = storeToRefs(personstore)
 
 // datamodel
 const idregistration = route.query.id
-const reg = ref({ representative: {}, payment_id: "" })
+const reg = ref({ payment_id: "" })
 
 definePageMeta({
   layout: "mgmt",
@@ -118,9 +118,8 @@ async function getRegistration() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("registration", "mgmt_get_registration_bjk", {
+    reply = await $backend("registration", "get_registration", {
       id: idregistration,
-      token: token.value,
     })
     readRegistration(reply.data)
   } catch (error) {
@@ -148,7 +147,7 @@ async function saveRegistration() {
   let reply
   showLoading(true)
   try {
-    await $backend("registration", "mgmt_update_registration_bjk", {
+    await $backend("registration", "mgmt_update_registration", {
       id: idregistration,
       reg: {
         first_name: reg.value.first_name,
@@ -166,14 +165,6 @@ async function saveRegistration() {
         ratingfide: reg.value.ratingfide,
         emailplayer: reg.value.emailplayer,
         mobileplayer: reg.value.mobileplayer,
-        representative: {
-          fullnameparent: reg.value.representative.fullnameparent,
-          emailparent: reg.value.representative.emailparent,
-          mobileparent: reg.value.representative.mobileparent,
-          fullnameattendant: reg.value.representative.fullnameattendant,
-          emailattendant: reg.value.representative.emailattendant,
-          mobileattendant: reg.value.representative.mobileattendant,
-        },
       },
       token: token.value,
     })
@@ -242,27 +233,7 @@ onMounted(async () => {
             <v-text-field v-model="reg.ratingfide" label="Rating FIDE" />
             <v-text-field v-model="reg.emailplayer" label="E-mail player" />
             <v-text-field v-model="reg.mobileplayer" label="Mobile player" />
-            <v-text-field
-              v-model="reg.representative.fullnameparent"
-              label="Full name parent"
-            />
-            <v-text-field
-              v-model="reg.representative.emailparent"
-              label="E-mail parent"
-            />
-            <v-text-field v-model="reg.representative.mobileparent" label="GSM parent" />
-            <v-text-field
-              v-model="reg.representative.fullnameattendant"
-              label="Full name attendant"
-            />
-            <v-text-field
-              v-model="reg.representative.emailattendant"
-              label="E-mail attendant"
-            />
-            <v-text-field
-              v-model="reg.representative.mobileattendant"
-              label="GSM attendant"
-            />
+            <v-text-field v-model="reg.chesstitle" label="Title" />
           </v-col>
         </v-row>
       </v-card-text>

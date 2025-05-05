@@ -31,16 +31,12 @@ export default {
       },
     })
   },
-  mgmt_update_participant_bjk: async function (options) {
+  mgmt_update_participant: async function (options) {
     const { id, participant, token } = options
     return await axios.put(`${prefix}/single/${id}`, participant, {
       headers: {
         Authorization: "Bearer " + token,
       },
     })
-  },
-  upload_photo_bjk: async function (options) {
-    const { id, photo } = options
-    return await axios.post(`${prefix}/photo/${id}`, { photo })
   },
 }
