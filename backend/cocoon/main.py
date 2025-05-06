@@ -51,11 +51,12 @@ logger.info(f"Email settings {settings.EMAIL}")
 # add CORS middleware for dev only
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    # allow_origins=["http://localhost:3000"],
+    # allow_origins=["*"],
+    allow_origins=["http://localhost:3000/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Access-Control-Allow-Origin"]
 )
 
 

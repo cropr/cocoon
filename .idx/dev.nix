@@ -11,6 +11,7 @@
     pkgs.poethepoet
     pkgs.yarn
     pkgs.gtk3
+    pkgs.hostname
   ];
 
   # Sets environment variables in the workspace
@@ -30,15 +31,12 @@
       enable = true;
       previews = {
         web = {
-          # Example: run "npm run dev" with PORT set to IDX's defined port for previews,
-          # and show it in IDX's web preview panel
-          command = ["yarn" "run" "dev"];
+          command = ["yarn" "dev" ];
           cwd = "frontend";
           manager = "web";
           env = {
-            # Environment variables to set for your server
             PORT = "$PORT";
-            API_URL = "8000-idx-cocoon-1739970435563.cluster-6yqpn75caneccvva7hjo4uejgk.cloudworkstations.dev";
+            API_URL = "https://8000-idx-cocoon-1739970435563.cluster-6yqpn75caneccvva7hjo4uejgk.cloudworkstations.dev/";
           };
         };
       };
@@ -48,12 +46,12 @@
     workspace = {
       # Runs when a workspace is first created
       onCreate = {
-        yarn-install = "cd frontend; yarn; cd ..";
+        fe-build = "poe fe_build";
+        be-build = "poe be_build";
       };
       # Runs when the workspace is (re)started
       onStart = {
-        # Example: start a background task to watch and re-build backend code
-        # watch-backend = "npm run watch-backend";
+        be-run = "poe be_run";
       };
     };
   };
