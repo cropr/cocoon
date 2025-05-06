@@ -177,7 +177,8 @@ async def lookup_idfide(idfide: str) -> IdReply:
                 belreply = None
     except DecodingError:
         raise RdBadRequest(description="DecodingErrorKBSB")
-    except TransportError:
+    except TransportError as e:
+        logger.exception(f"TransportErrorKBSB {e}")
         raise RdBadRequest(description="TransportErrorKBSB")
     url = api_lookupfide.format(id=idfide)
     try:

@@ -104,7 +104,7 @@ async def create_pr_participants() -> str:
         if ix > 10:
             break
         pr: Dict[str, Any] = {
-            "email": ",".join(par.emails),
+            "email": par.emailplayer,
             "first_name": par.first_name,
             "last_name": par.last_name,
             "link_id": par.id,
@@ -125,11 +125,11 @@ async def create_pr_participant(parid: str) -> str:
     """
     par = await get_participant(parid)
     pr: Dict[str, Any] = {
-        "email": ",".join(par.emails),
+        "email": par.emailplayer,
         "first_name": par.first_name,
         "last_name": par.last_name,
         "link_id": parid,
-        "locale": par.locale,
+        "locale": "en",
         "paystatus": False,
         "reason": "Cocoon 2025",
     }
@@ -151,9 +151,12 @@ def calc_pricedetails_par(
     calculates cost for pricedetails
     """
     logger.info(f"Calculation details for participant {par.first_name} {par.last_name}")
-    amount = 35 if par.birthyear > 2004 else 55
-    if par.chesstitle != "":
-        logger.info("Please check titles")
+    if par.chesstitle in ["GM", "WGM", "IM", "WIM"]:
+        amount = 0
+    elif par.chesstitle in ["FM", "WFM"]:
+        amount = 35
+    else:
+        amount = 35 if par.birthyear > 2004 else 55
     admincost = 10
     total = amount
     details = [
