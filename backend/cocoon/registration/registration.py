@@ -104,6 +104,7 @@ async def create_registration(ei: RegistrationIn) -> str:
         try:
             pl = await lookup_idbel(ei.idbel)
             meu.birthyear = pl.birthyear
+            meu.chesstitle = pl.chesstitle
             meu.gender = pl.gender
             meu.first_name = pl.first_name
             meu.idclub = pl.idclub
@@ -116,6 +117,7 @@ async def create_registration(ei: RegistrationIn) -> str:
         try:
             pl = await lookup_idfide(ei.idfide)
             meu.birthyear = pl.birthyear
+            meu.chesstitle = pl.chesstitle
             meu.gender = pl.gender
             meu.first_name = pl.first_name
             meu.last_name = pl.last_name
