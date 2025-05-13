@@ -149,12 +149,13 @@ async function saveRegistration() {
   try {
     await $backend("registration", "mgmt_update_registration", {
       id: idregistration,
-      reg: {
+      registration: {
         first_name: reg.value.first_name,
         last_name: reg.value.last_name,
         idbel: reg.value.idbel,
         idfide: reg.value.idfide,
         category: reg.value.category,
+        chesstitle: reg.value.chesstitle,
         gender: reg.value.gender,
         birthyear: reg.value.birthyear,
         locale: reg.value.locale,

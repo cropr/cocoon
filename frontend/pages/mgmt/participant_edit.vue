@@ -156,6 +156,7 @@ async function saveParticipant() {
       id: idparticipant,
       participant: {
         category: par.value.category,
+        chesstitle: par.value.chesstitle,
         emailplayer: par.value.emailplayer,
         enabled: par.value.enabled,
         mobileplayer: par.value.mobileplayer,
@@ -234,6 +235,7 @@ onMounted(async () => {
             <v-text-field v-model="par.ratingbel" label="ELO BEL" />
             <v-text-field v-model="par.ratingfide" label="ELO FIDE" />
             <v-text-field v-model="par.category" label="Category" />
+            <v-text-field v-model="par.chesstitle" label="Chess title" />
             <div class="my-2">ID Bel {{ par.idbel }}</div>
             <div class="my-2">Creation time {{ date2str(par._creationtime) }}</div>
           </v-col>
