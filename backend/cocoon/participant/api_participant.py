@@ -166,6 +166,36 @@ async def api_upload_photo(id: str, body: dict):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
+@router.post("/email_hotel/{id}")
+async def api_email_hotel(
+    id: str,
+    auth: HTTPAuthorizationCredentials = Depends(bearer_schema),
+):
+    try:
+        await validate_token(auth)
+        await api_email_hotel(id)
+    except RdException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.description)
+    except Exception:
+        logger.exception("failed api call email hotel")
+        raise HTTPException(status_code=500)
+
+
+@router.post("/email_hotel/{id}")
+async def api_email_hotels(
+    id: str,
+    auth: HTTPAuthorizationCredentials = Depends(bearer_schema),
+):
+    try:
+        await validate_token(auth)
+        await api_email_hotels()
+    except RdException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.description)
+    except Exception:
+        logger.exception("failed api call email hotel")
+        raise HTTPException(status_code=500)
+
+
 # @router.get("/prizes/", response_class=HTMLResponse)
 # async def api_generate_prizes():
 #     try:

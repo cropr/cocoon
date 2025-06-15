@@ -28,6 +28,7 @@ class PaymentRequestDB:
     email: str
     first_name: str
     guests: str
+    hotelmaildate: str
     idbel: str
     idfide: str
     last_name: str
@@ -64,6 +65,7 @@ class PaymentRequest(BaseModel):
     email: str | None = None  # csl of email addresses
     first_name: str | None = None
     guests: str | None = None  # csl of firstname lastname
+    hotelmaildate: str | None = None  # format YYYY-MM-DD
     id: str | None = None
     idbel: str | None = None
     idfide: str | None = None
@@ -93,6 +95,7 @@ class PaymentRequestItem(BaseModel):
     """
 
     first_name: str
+    hotelmaildate: str
     id: str
     idbel: str | None = ""
     idfide: str | None = ""
@@ -120,6 +123,7 @@ class PaymentRequestUpdate(BaseModel):
     checkoutdate: str | None = None  # format YYYY-MM-DD
     email: str | None = None  # comma separated list of email addresses
     first_name: str | None = None
+    hotelmaildate: str | None = None  # format YYYY-MM-DD
     locale: str | None = None
     lodging_assigned: str | None = None
     lodging_requested: str | None = None

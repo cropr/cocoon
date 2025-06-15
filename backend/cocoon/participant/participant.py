@@ -253,6 +253,35 @@ async def upload_photo(id: str, photo: str) -> None:
     await update_participant(id, su)
 
 
+async def email_hotel(prqid) -> None:
+    prq = await get_payment_request(prqid)
+    assert prq.email and prq.locale
+    mp = MailParams(
+        subject="Hotels Cocoon 2025",
+        sender=settings.EMAIL["sender"],
+        receiver=prq.email,
+        template="pr_part_mail.md",
+        locale=prq.locale,
+        attachments=[],
+        bcc=settings.EMAIL.get("bcc_registration", ""),
+    )
+    sendemail_no_attachments(mp, prq.model_dump(), "paymentrq participant")
+    await update_payment_request(
+        prqid, PaymentRequest(sentdate=date.today().isoformat())
+    )
+
+
+async def email_hotelss() -> None:
+    """
+    send all virgin payment requests
+    """
+    prqs = await get_payment_requests()
+    for prq in prqs:
+        if prq.sentdate:
+            continue
+        await email_paymentrequest(prq.id)
+
+
 # async def generate_prizes():
 #     """
 #     get the prizes for the bjk by categorie

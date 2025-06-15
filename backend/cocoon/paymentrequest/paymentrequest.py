@@ -223,7 +223,7 @@ async def email_paymentrequest(prqid) -> None:
     )
 
 
-async def email_paymentrequests(prqid) -> None:
+async def email_paymentrequests() -> None:
     """
     send all virgin payment requests
     """
