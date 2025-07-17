@@ -1,30 +1,33 @@
 tasks:
   be_run:
-    cmd: poetry run uvicorn cocoon.main:app --reload
+    shell: | 
+      cd backend
+      uv run uvicorn cocoon.main:app --reload
+      cd ..
     help: run the backend uvicorn server
   deploy:
     shell: |
-      pushd backend
+      cd backend
       gcloud app deploy --quiet
-      popd
+      cd ..
     help: deploy app on google cloud
   fe_build:
     shell: | 
-      pushd frontend
+      cd frontend
       yarn
-      popd
+      cd ..
     help: update frontend installation    
   fe_generate:
     shell: | 
-      pushd frontend
+      cd frontend
       API_URL=https://cocoon.kosk.be/ yarn generate
-      popd
+      cd ..
     help: generate static frontend    
   fe_run:
     shell: | 
-      pushd frontend
+      cd frontend
       yarn dev
-      popd
+      cd ..
     help: run yarn dev in frontend
   gcp_init:
     shell: | 

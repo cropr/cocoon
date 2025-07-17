@@ -6,7 +6,8 @@
 .mypy_cache
 .env
 .DS_Store
-,idx
+.idx
+.idea
 
 # frontend
 .output

@@ -96,7 +96,7 @@ app.include_router(api_paymentrequest.router)
 app.include_router(api_statamic.router)
 app.include_router(api_page.router)
 app.include_router(api_tournament.router)
-logger.info(f"Api's loaded")
+logger.info("Api's loaded")
 
 # static files
 # app.mount("/css", StaticFiles(directory="../static/css"), name="css")
