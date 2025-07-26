@@ -1,40 +1,41 @@
 <script setup>
-import { ref } from "vue";
-import { v_required, v_length2 } from "@/composables/validators";
-import ProgressLoading from "@/components/ProgressLoading.vue";
-import SnackbarMessage from "@/components/SnackbarMessage.vue";
+import { ref } from "vue"
+import { v_required, v_length2 } from "@/composables/validators"
+import ProgressLoading from "@/components/ProgressLoading.vue"
+import SnackbarMessage from "@/components/SnackbarMessage.vue"
 
 // communication
-const emit = defineEmits(["changeStep", "updateRegistration"]);
-defineExpose({ setup });
-const { $backend } = useNuxtApp();
+const emit = defineEmits(["changeStep", "updateRegistration"])
+defineExpose({ setup })
+const { $backend } = useNuxtApp()
 
 //  snackbar and loading widgets
-const refsnackbar = ref(null);
-let showSnackbar;
-const refloading = ref(null);
-let showLoading;
+const refsnackbar = ref(null)
+let showSnackbar
+const refloading = ref(null)
+let showLoading
 
 // datamodel member
-const birthyear = ref(0);
-const category = ref("open");
-const emailplayer = ref("");
-const first_name = ref("");
-const idbel = ref("");
-const idfide = ref("");
-const idsub = ref("");
-const last_name = ref("");
-const mobileplayer = ref("");
-const nationalityfide = ref("");
-const playerremark = ref("");
+const birthyear = ref(0)
+const category = ref("open")
+const chesstitle = ref("")
+const emailplayer = ref("")
+const first_name = ref("")
+const idbel = ref("")
+const idfide = ref("")
+const idsub = ref("")
+const last_name = ref("")
+const mobileplayer = ref("")
+const nationalityfide = ref("")
+const playerremark = ref("")
 
 // datamodel the rest
-const step = 3;
-const formvalid = ref(false);
+const step = 3
+const formvalid = ref(false)
 
 async function next() {
-  let reply;
-  showLoading(true);
+  let reply
+  showLoading(true)
   try {
     reply = await $backend("registration", "create_registration", {
       registrationIn: {
@@ -46,37 +47,38 @@ async function next() {
         locale: "en",
         mobileplayer: mobileplayer.value,
       },
-    });
+    })
   } catch (error) {
-    console.error("error", error);
-    showSnackbar(error.message);
-    return;
+    console.error("error", error)
+    showSnackbar(error.message)
+    return
   } finally {
-    showLoading(false);
+    showLoading(false)
   }
-  idsub.value = reply.data;
-  updateRegistration();
-  emit("changeStep", step + 1);
+  idsub.value = reply.data
+  updateRegistration()
+  emit("changeStep", step + 1)
 }
 
 function prev() {
-  updateRegistration();
-  emit("changeStep", step - 1);
+  updateRegistration()
+  emit("changeStep", step - 1)
 }
 
 function setup(e) {
-  console.log("setup details", e);
-  birthyear.value = e.birthyear;
-  category.value = e.category ? e.category : category.value;
-  emailplayer.value = e.emailplayer;
-  first_name.value = e.first_name;
-  idbel.value = e.idbel;
-  idfide.value = e.idfide;
-  idsub.value = e.idsub;
-  last_name.value = e.last_name;
-  mobileplayer.value = e.mobileplayer;
-  nationalityfide.value = e.nationalityfide;
-  playerremark.value = e.playerremark;
+  console.log("setup details", e)
+  birthyear.value = e.birthyear
+  category.value = e.category ? e.category : category.value
+  chesstitle.value = e.chesstitle
+  emailplayer.value = e.emailplayer
+  first_name.value = e.first_name
+  idbel.value = e.idbel
+  idfide.value = e.idfide
+  idsub.value = e.idsub
+  last_name.value = e.last_name
+  mobileplayer.value = e.mobileplayer
+  nationalityfide.value = e.nationalityfide
+  playerremark.value = e.playerremark
 }
 
 function updateRegistration() {
@@ -85,14 +87,14 @@ function updateRegistration() {
     emailplayer: emailplayer.value,
     idsub: idsub.value,
     mobileplayer: mobileplayer.value,
-  });
+  })
 }
 
 onMounted(() => {
-  showSnackbar = refsnackbar.value.showSnackbar;
-  showLoading = refloading.value.showLoading;
-  category.value = "open";
-});
+  showSnackbar = refsnackbar.value.showSnackbar
+  showLoading = refloading.value.showLoading
+  category.value = "open"
+})
 </script>
 <template>
   <v-form v-model="formvalid">
@@ -121,6 +123,11 @@ onMounted(() => {
         <v-col cols="12" md="6" class="pa-1">
           <div>
             FIDE nationality: <b>{{ nationalityfide }}</b>
+          </div>
+        </v-col>
+        <v-col cols="12" md="6" class="pa-1">
+          <div>
+            Chess title: <b>{{ chesstitle }}</b>
           </div>
         </v-col>
       </v-row>

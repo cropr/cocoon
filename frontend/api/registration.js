@@ -26,6 +26,10 @@ export default {
   get_registrations: async function () {
     return await axios.get(`${prefix}`)
   },
+  get_registration: async function (options) {
+    const { id } = options
+    return await axios.get(`${prefix}/${id}`)
+  },
   mgmt_get_registration: async function (options) {
     const { id, token } = options
     return await axios.get(`${prefix}/${id}`, {

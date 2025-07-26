@@ -15,6 +15,7 @@ from cocoon.registration import (
     confirm_registration,
     create_registration,
     get_registrations,
+    get_registration,
     get_photo,
     lookup_idbel,
     lookup_idfide,
@@ -53,8 +54,20 @@ async def api_create_registration(enr: RegistrationIn):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
+@router.get("/{id}", response_model=RegistrationItem)
+async def api_get_registration(id: str):
+    try:
+        reg = await get_registration(id)
+        return reg
+    except RdException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.description)
+    except Exception:
+        logger.exception("failed api call get_registration")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
 @router.put("/{id}", response_model=Registration)
-async def api_update_registration_vk(id: str, enr: RegistrationUpdate):
+async def api_update_registration(id: str, enr: RegistrationUpdate):
     try:
         id = await update_registration(id, enr)
         return id

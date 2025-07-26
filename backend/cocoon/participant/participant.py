@@ -62,21 +62,18 @@ async def import_registration(idenr) -> str:
     enr = cast(Registration, await get_registration(idenr))
     return await DbParticpant.add(
         {
-            "badgeimage": enr.badgeimage,
-            "badgemimetype": enr.badgemimetype,
-            "badgelength": enr.badgelength,
             "birthyear": enr.birthyear,
             "category": ParticipantCategory(enr.category.value),
             "chesstitle": enr.chesstitle or "",
             "enabled": True,
-            "emails": enr.emailplayer.split(","),
+            "emailplayer": enr.emailplayer or "",
             "first_name": enr.first_name,
             "gender": Gender(enr.gender),
             "idbel": enr.idbel,
             "idclub": enr.idclub,
             "idfide": enr.idfide,
-            "locale": enr.locale,
             "last_name": enr.last_name,
+            "mobileplayer": enr.mobileplayer or "",
             "nationalityfide": enr.nationalityfide,
             "present": None,
             "ratingbel": enr.ratingbel or 0,

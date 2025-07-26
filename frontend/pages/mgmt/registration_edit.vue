@@ -26,7 +26,7 @@ const { person } = storeToRefs(personstore)
 
 // datamodel
 const idregistration = route.query.id
-const reg = ref({ representative: {}, payment_id: "" })
+const reg = ref({ payment_id: "" })
 
 definePageMeta({
   layout: "mgmt",
@@ -101,12 +101,8 @@ async function getRegistration() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend({
-      method: "get",
-      url: "/api/v1/registration/" + idregistration,
-      headers: {
-        Authorization: "Bearer " + token.value,
-      },
+    reply = await $backend("registration", "get_registration", {
+      id: idregistration,
     })
     readRegistration(reply.data)
   } catch (error) {
@@ -134,38 +130,25 @@ async function saveRegistration() {
   let reply
   showLoading(true)
   try {
-    await $backend({
-      method: "put",
-      url: "/api/v1/registration/" + idregistration,
-      headers: {
-        Authorization: "Bearer " + token.value,
-      },
-      data: {
-        reg: {
-          first_name: reg.value.first_name,
-          last_name: reg.value.last_name,
-          idbel: reg.value.idbel,
-          idfide: reg.value.idfide,
-          category: reg.value.category,
-          gender: reg.value.gender,
-          birthyear: reg.value.birthyear,
-          locale: reg.value.locale,
-          confirmed: reg.value.confirmed,
-          remarks: reg.value.remarks,
-          enabled: reg.value.enabled,
-          ratingbel: reg.value.ratingbel,
-          ratingfide: reg.value.ratingfide,
-          emailplayer: reg.value.emailplayer,
-          mobileplayer: reg.value.mobileplayer,
-          representative: {
-            fullnameparent: reg.value.representative.fullnameparent,
-            emailparent: reg.value.representative.emailparent,
-            mobileparent: reg.value.representative.mobileparent,
-            fullnameattendant: reg.value.representative.fullnameattendant,
-            emailattendant: reg.value.representative.emailattendant,
-            mobileattendant: reg.value.representative.mobileattendant,
-          },
-        },
+    await $backend("registration", "mgmt_update_registration", {
+      id: idregistration,
+      registration: {
+        first_name: reg.value.first_name,
+        last_name: reg.value.last_name,
+        idbel: reg.value.idbel,
+        idfide: reg.value.idfide,
+        category: reg.value.category,
+        chesstitle: reg.value.chesstitle,
+        gender: reg.value.gender,
+        birthyear: reg.value.birthyear,
+        locale: reg.value.locale,
+        confirmed: reg.value.confirmed,
+        remarks: reg.value.remarks,
+        enabled: reg.value.enabled,
+        ratingbel: reg.value.ratingbel,
+        ratingfide: reg.value.ratingfide,
+        emailplayer: reg.value.emailplayer,
+        mobileplayer: reg.value.mobileplayer,
       },
     })
   } catch (error) {
@@ -233,27 +216,7 @@ onMounted(async () => {
             <v-text-field v-model="reg.ratingfide" label="Rating FIDE" />
             <v-text-field v-model="reg.emailplayer" label="E-mail player" />
             <v-text-field v-model="reg.mobileplayer" label="Mobile player" />
-            <v-text-field
-              v-model="reg.representative.fullnameparent"
-              label="Full name parent"
-            />
-            <v-text-field
-              v-model="reg.representative.emailparent"
-              label="E-mail parent"
-            />
-            <v-text-field v-model="reg.representative.mobileparent" label="GSM parent" />
-            <v-text-field
-              v-model="reg.representative.fullnameattendant"
-              label="Full name attendant"
-            />
-            <v-text-field
-              v-model="reg.representative.emailattendant"
-              label="E-mail attendant"
-            />
-            <v-text-field
-              v-model="reg.representative.mobileattendant"
-              label="GSM attendant"
-            />
+            <v-text-field v-model="reg.chesstitle" label="Title" />
           </v-col>
         </v-row>
       </v-card-text>

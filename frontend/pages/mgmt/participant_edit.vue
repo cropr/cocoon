@@ -28,7 +28,6 @@ const { person } = storeToRefs(personstore)
 // datamodel
 const idparticipant = route.query.id
 const par = ref({ payment_id: "" })
-const emails = ref("")
 
 definePageMeta({
   layout: "mgmt",
@@ -155,18 +154,8 @@ async function gotoPaymentrequest(id) {
   router.push("/mgmt/paymentrequest_edit?id=" + id)
 }
 
-function handleFile(event) {
-  const reader = new FileReader()
-  reader.onload = (event) => {
-    console.log("handle file onload", event, photo.value)
-    photosrc.value.replace(event.target.result)
-  }
-  reader.readAsDataURL(event[0])
-}
-
 function readParticipant(participant) {
   par.value = { ...participant }
-  emails.value = par.value.emails.join(",")
 }
 
 async function refresh() {
@@ -178,20 +167,16 @@ async function saveParticipant() {
   showLoading(true)
 
   try {
-    await $backend({
-      method: "put",
-      url: "/api/v1/participant/" + idparticipant,
-      data: {
-        participant: {
-          category: par.value.category,
-          emails: emails.value.split(","),
-          enabled: par.value.enabled,
-          ratingbel: par.value.ratingbel,
-          ratingfide: par.value.ratingfide,
-        },
-      },
-      headers: {
-        Authorization: "Bearer " + mgmttoken.value,
+    await $backend("participant", "mgmt_update_participant", {
+      id: idparticipant,
+      participant: {
+        category: par.value.category,
+        chesstitle: par.value.chesstitle,
+        emailplayer: par.value.emailplayer,
+        enabled: par.value.enabled,
+        mobileplayer: par.value.mobileplayer,
+        ratingbel: par.value.ratingbel,
+        ratingfide: par.value.ratingfide,
       },
     })
   } catch (error) {
@@ -257,12 +242,14 @@ onMounted(async () => {
             <v-text-field v-model="par.last_name" label="Last name" />
             <v-text-field v-model="par.first_name" label="First name" />
             <v-switch v-model="par.enabled" label="Enabled" color="deep-purple" />
-            <v-text-field v-model="emails" label="Emails" />
+            <v-text-field v-model="par.emailplayer" label="Email player" />
+            <v-text-field v-model="par.mobileplayer" label="Mobile player" />
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field v-model="par.ratingbel" label="ELO BEL" />
             <v-text-field v-model="par.ratingfide" label="ELO FIDE" />
             <v-text-field v-model="par.category" label="Category" />
+            <v-text-field v-model="par.chesstitle" label="Chess title" />
             <div class="my-2">ID Bel {{ par.idbel }}</div>
             <div class="my-2">Creation time {{ date2str(par._creationtime) }}</div>
           </v-col>
@@ -298,21 +285,5 @@ onMounted(async () => {
 .dropbox {
   width: 100%;
   background-color: aliceblue;
-}
-
-.photosrc {
-  overflow: hidden;
-  width: 100%;
-  height: 400px;
-  border: 1px dashed #808080;
-  background-color: #d3d3d3;
-}
-
-.photoresult {
-  overflow: hidden;
-  position: relative;
-  text-align: center;
-  width: 160px;
-  height: 200px;
 }
 </style>

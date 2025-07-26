@@ -13,7 +13,6 @@ const drawer = ref(false)
       </v-toolbar>
       <v-list nav class="bm-blue-grey-darken-1">
         <v-list-item to="/" title="Home" />
-
         <v-list-group no-action>
           <template #activator="{ props }">
             <v-list-item v-bind="props" title="Cocoon" />
@@ -22,6 +21,7 @@ const drawer = ref(false)
           <v-list-item to="playing-schedule" title="Playing schedule" />
           <v-list-item href="/img/Cocoon2025.pdf" title="Brochure" />
           <v-list-item to="participants" title="Participants" />
+          <v-list-item to="rules" title="Tournament Rules" />
         </v-list-group>
         <v-list-group no-action>
           <template #activator="{ props }">
@@ -30,6 +30,8 @@ const drawer = ref(false)
           <v-list-item to="venue" title="Venue" />
           <v-list-item to="stay" title="Stay" />
         </v-list-group>
+        <v-list-item to="activities" title="Side activities" />
+        <v-list-item to="sponsors" title="Sponsors" />
       </v-list>
     </VNavigationDrawer>
     <v-app-bar color="indigo-darken-1">
@@ -39,7 +41,7 @@ const drawer = ref(false)
     <v-main>
       <slot />
       <hr />
-      <!-- <AdCarousel /> -->
+      <AdCarousel />
     </v-main>
 
     <TheFooter />

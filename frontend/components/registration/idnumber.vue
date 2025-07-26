@@ -16,6 +16,7 @@ let showLoading
 
 // datamodel member
 const birthyear = ref(null)
+const chesstitle = ref("")
 const first_name = ref("")
 const gender = ref(null)
 const idbel = ref("")
@@ -54,6 +55,7 @@ async function lookup_bel() {
   isBelPlayerFound.value = member.belfound
   isFidePlayerFound.value = true
   birthyear.value = member.birthyear
+  chesstitle.value = member.chesstitle
   first_name.value = member.first_name
   gender.value = member.gender
   idclub.value = member.idclub
@@ -88,6 +90,7 @@ async function lookup_fide() {
   isBelPlayerFound.value = member.belfound
   isFidePlayerFound.value = true
   birthyear.value = member.birthyear
+  chesstitle.value = member.chesstitle
   first_name.value = member.first_name
   gender.value = member.gender
   idclub.value = member.idclub
@@ -135,6 +138,7 @@ function updateregistration() {
   emit("updateRegistration", {
     birthyear: birthyear.value,
     first_name: first_name.value,
+    chesstitle: chesstitle.value,
     gender: gender.value,
     idbel: idbel.value,
     idclub: idclub.value,

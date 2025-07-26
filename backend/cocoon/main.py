@@ -96,7 +96,7 @@ app.include_router(api_paymentrequest.router)
 app.include_router(api_statamic.router)
 app.include_router(api_page.router)
 app.include_router(api_tournament.router)
-logger.info(f"Api's loaded")
+logger.info("Api's loaded")
 
 # static files
 # app.mount("/css", StaticFiles(directory="../static/css"), name="css")
@@ -112,3 +112,9 @@ for route in app.routes:
 
 # importing test endpoints
 import cocoon.tst_endpoints  # noqa F401
+
+if settings.COCOON_MODE == "prodtest":
+    from cocoon.adhoc import router  # noqa F401
+
+    app.include_router(router)
+    logger.info("adhoc commands loaded")

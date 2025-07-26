@@ -1,31 +1,28 @@
-[tool.poetry]
-name = "Cocoon"
-version = "1.1.1"
-description = "cocoon backend"
-authors = ["Ruben Decrop <ruben@kosk.be>"]
-
-packages = [
-    { include = "cocoon", from = "backend" }
+[project]
+name = "cocoon"
+version = "1.2.0"
+description = "Cocoon backend"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "asyncssh>=2.21.0",
+    "gunicorn>=23.0.0",
+    "openpyxl>=3.1.5",
+    "python-dotenv>=1.1.1",
+    "reddevil",
+    "toml>=0.10.2",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-toml = "^0.10.2"
-gunicorn = "^21.2.0"
-python-dotenv = "^1.0.1"
-openpyxl = "^3.1.2"
-asyncssh = "^2.14.2"
-reddevil = {path = "libs/reddevil-3.4.2-py3-none-any.whl"}
+[tool.uv.sources]
+reddevil = { path = "libs/reddevil-3.4.1-py3-none-any.whl" }
 
-[tool.poetry.group.dev.dependencies]
-black = "^23"
-pytest = "^7"
-pytest-asyncio = "^0.23.5"
-toml = "^0.10.2"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "ruff>=0.12.3",
+]
 
 [tool.ruff]
 line-length = 88
@@ -37,57 +34,4 @@ unfixable = []
 
 [tool.ruff.lint.per-file-ignores]
 "**/__init__.py" = ["E402"]
-
-
-[tool.poe.tasks.be_build]
-shell = """
-    poetry lock
-    poetry install
-"""
-help = "build fastapi backend"
-
-
-[tool.poe.tasks.be_run]
-cmd = "poetry run uvicorn cocoon.main:app --reload"
-help = "run fastapi in backend"
-
-[tool.poe.tasks.deploy]
-shell = """
-    pushd backend
-    gcloud app deploy --quiet
-popd
-"""
-help = "deploy app on google cloud"
-
-
-[tool.poe.tasks.gcp_init]
-shell = """
-    gcloud config configurations activate cocoon
-    gcloud auth application-default login
-"""
-help = "activate GCP cocoon project"
-
-[tool.poe.tasks.fe_build]
-shell = """ 
-    pushd frontend
-    yarn 
-    popd
-"""
-help = "run yarn in frontend"
-
-[tool.poe.tasks.fe_generate]
-shell = """ 
-    pushd frontend
-    API_URL=https://cocoon.kosk.be/ yarn generate
-    popd
-"""
-help = "run yarn in frontend"
-
-[tool.poe.tasks.fe_run]
-shell = """ 
-    pushd frontend
-    yarn dev
-    popd
-"""
-help = "run yarn dev in frontend"
 
