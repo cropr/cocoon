@@ -4,7 +4,6 @@ import { ref } from "vue"
 // communication
 const { $backend } = useNuxtApp()
 
-
 //snackbar progessloading
 import ProgressLoading from "@/components/ProgressLoading.vue"
 import SnackbarMessage from "@/components/SnackbarMessage.vue"
@@ -13,7 +12,6 @@ let showSnackbar
 const refloading = ref(null)
 let showLoading
 
-const urlprefix = "/api/v1/participant"
 const pagetitle = ref("")
 const pagecontent = ref("")
 const pageintro = ref("")
@@ -22,9 +20,7 @@ async function getPage(slug) {
   console.log("getPage", slug)
   showLoading(true)
   try {
-    let reply = await $backend({
-      method: "get",
-      url: `${urlprefix}`,
+    let reply = await $backend("wagtail", "get_page", {
       slug: slug,
     })
     const page = reply.data

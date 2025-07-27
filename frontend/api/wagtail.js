@@ -3,11 +3,18 @@ import axios from "axios"
 const prefix = "/api/v1/wagtail"
 
 export default {
-  wagtail_list: async function (options) {
-    return await axios.get(`${prefix}/`)
+  get_pages: async function (options) {
+    return await axios.get(`${prefix}/pages/`)
   },
-  wagtail_page: async function (options) {
+  get_page: async function (options) {
     const { slug } = options
-    return await axios.get(`${prefix}/${slug}/`)
+    return await axios.get(`${prefix}/pages/${slug}`)
+  },
+  get_images: async function (options) {
+    return await axios.get(`${prefix}/images/`)
+  },
+  get_image: async function (options) {
+    const { title } = options
+    return await axios.get(`${prefix}/images/${title}`)
   },
 }
