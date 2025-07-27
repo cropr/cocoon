@@ -2,11 +2,11 @@ import axios from "axios"
 import accounts from "@/api/accounts"
 import attendee from "@/api/attendee"
 import filestore from "@/api/filestore"
-import page from "@/api/page"
 import participant from "@/api/participant"
 import payment from "@/api/payment"
 import registration from "@/api/registration"
 import tournament from "@/api/tournament"
+import wagtail from "@/api/wagtail"
 
 axios.defaults.withCredentials = true
 
@@ -69,15 +69,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       backend: async function (options) {
         return await axios({
           baseURL: runtimeConfig.public.apiUrl,
-          url: options.url,
-          method: options.method ? options.method : "get",
-          data: options.data ? options.data : {},
-          headers: options.headers ? options.headers : {},
-        })
-      },
-      cms: async function (options) {
-        return await axios({
-          baseURL: runtimeConfig.public.wagtailUrl,
           url: options.url,
           method: options.method ? options.method : "get",
           data: options.data ? options.data : {},

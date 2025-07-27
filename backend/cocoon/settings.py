@@ -111,6 +111,8 @@ TOKEN = {
     "nocheck": False,
 }
 
+WAGTAIL_URL = os.environ.get("WAGTAIL_URL", "https://cocooncms.fly.dev")
+
 ls = "No local settings found"
 
 if COCOON_MODE == "local":

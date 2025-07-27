@@ -1,6 +1,10 @@
 <script setup>
 import { ref } from "vue"
 
+// communication
+const { $backend } = useNuxtApp()
+
+
 //snackbar progessloading
 import ProgressLoading from "@/components/ProgressLoading.vue"
 import SnackbarMessage from "@/components/SnackbarMessage.vue"
@@ -9,38 +13,19 @@ let showSnackbar
 const refloading = ref(null)
 let showLoading
 
-const { $cms } = useNuxtApp()
-let pages = {}
+const urlprefix = "/api/v1/participant"
 const pagetitle = ref("")
 const pagecontent = ref("")
 const pageintro = ref("")
 
-async function getPages() {
-  console.log("getPages")
+async function getPage(slug) {
+  console.log("getPage", slug)
   showLoading(true)
   try {
-    let reply = await $cms({
+    let reply = await $backend({
       method: "get",
-      url: "/apiwt/pages",
-    })
-    pages = reply.data.items
-  } catch (error) {
-    showSnackbar("Page loading failed")
-    console.log("getPages error", error)
-    return
-  } finally {
-    showLoading(false)
-  }
-  await findPage("cocoon-2025")
-}
-
-async function getPage(id) {
-  console.log("getPage", id)
-  showLoading(true)
-  try {
-    let reply = await $cms({
-      method: "get",
-      url: `/apiwt/pages/${id}/`,
+      url: `${urlprefix}`,
+      slug: slug,
     })
     const page = reply.data
     console.log("page", page)
@@ -55,25 +40,10 @@ async function getPage(id) {
   }
 }
 
-async function findPage(slug) {
-  console.log("findPage", slug)
-  let foundid = 0
-  pages.forEach((page) => {
-    if (page.meta.slug === slug) {
-      foundid = page.id
-    }
-  })
-  if (foundid) {
-    await getPage(foundid)
-  } else {
-    showSnackbar("Page not found")
-  }
-}
-
 onMounted(() => {
   showSnackbar = refsnackbar.value.showSnackbar
   showLoading = refloading.value.showLoading
-  getPages()
+  getPage("cocoon")
 })
 </script>
 

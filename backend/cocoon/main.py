@@ -72,20 +72,17 @@ from reddevil.filestore import api_filestore  # noqa F401
 logger.info("loading api_enrollment")
 from cocoon.registration import api_registration  # noqa F401
 
-logger.info("loading api_page")
-from cocoon.page import api_page  # noqa F401
-
 logger.info("loading api_participant")
 from cocoon.participant import api_participant  # noqa F401
 
 logger.info("loading api_paymentrequest")
 from cocoon.paymentrequest import api_paymentrequest  # noqa F401
 
-logger.info("loading api_statamic")
-from cocoon.statamic import api_statamic  # noqa F401
-
 logger.info("loading api_tournament")
 from cocoon.tournament import api_tournament  # noqa F401
+
+logger.info("loading api_wagtail")
+from cocoon.wagtail import api_wagtail  # noqa F401
 
 app.include_router(api_account.router)
 app.include_router(api_attendee.router)
@@ -93,9 +90,8 @@ app.include_router(api_registration.router)
 app.include_router(api_filestore.router)
 app.include_router(api_participant.router)
 app.include_router(api_paymentrequest.router)
-app.include_router(api_statamic.router)
-app.include_router(api_page.router)
 app.include_router(api_tournament.router)
+app.include_router(api_wagtail.router)
 logger.info("Api's loaded")
 
 # static files
