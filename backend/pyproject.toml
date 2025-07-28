@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "asyncssh>=2.21.0",
+    "asyncstdlib>=3.13.1",
     "beautifulsoup4>=4.13.4",
     "gunicorn>=23.0.0",
     "openpyxl>=3.1.5",
