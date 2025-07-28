@@ -15,7 +15,7 @@ clear_cache_started = False
 CACHE_EXPIRES = 300  # Cache expiration time in seconds
 
 
-@a.cache()
+@a.cache
 async def wagtail_getpages():
     """
     Lists files in Wagtail cms.
@@ -36,7 +36,7 @@ async def wagtail_getpages():
         raise RdException("Failed to list Wagtail files") from e
 
 
-@a.cache()
+@a.cache
 async def wagtail_getpage(slug: str):
     """
     Get file from Wagtail cms.
@@ -80,7 +80,7 @@ async def wagtail_getpage(slug: str):
         raise RdException(f"Failed to get Wagtail file {id}") from e
 
 
-@a.cache()
+@a.cache
 async def wagtail_getimages():
     """
     Lists files in Wagtail cms.
@@ -97,7 +97,7 @@ async def wagtail_getimages():
         raise RdException("Failed to list Wagtail images") from e
 
 
-@a.cache()
+@a.cache
 async def wagtail_getimage(title: str):
     """
     Get file from Wagtail cms.
