@@ -41,6 +41,10 @@ onMounted(() => {
   showLoading = refloading.value.showLoading
   getPage("sponsors")
 })
+
+definePageMeta({
+  layout: "nocarousel",
+})
 </script>
 
 <template>

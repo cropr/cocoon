@@ -5,7 +5,6 @@ const items = [
   { src: "/img/vanessa.jpg", name: "vanesa" },
   { src: "/img/frame_talistro.png", name: "talistro" },
   { src: "/img/frame_kbc.png", name: "kbc" },
-  { src: "/img/frame_oostende.png", name: "oostende" },
   { src: "/img/frame_bnpparibas.png", name: "bnpparibas" },
 ]
 const current = ref(Math.floor(Math.random() * items.length))

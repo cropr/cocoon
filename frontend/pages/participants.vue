@@ -31,9 +31,8 @@ async function getParticipants() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend({
-      method: "get",
-      url: `${urlprefix}/list?enabled=1`,
+    reply = await $backend("participant", "get_participants", {
+      enabled: true,
     })
     participants.value = reply.data
   } catch (error) {
