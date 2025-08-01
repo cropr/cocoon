@@ -48,9 +48,6 @@ onMounted(() => {
   <ProgressLoading ref="refloading" />
   <v-container>
     <h1>{{ pagetitle }}</h1>
-    <div>
-      <i>{{ pageintro }}</i>
-    </div>
     <div v-html="pagecontent"></div>
   </v-container>
 </template>

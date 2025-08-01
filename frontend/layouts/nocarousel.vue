@@ -40,13 +40,6 @@ const drawer = ref(false)
     </v-app-bar>
     <v-main>
       <slot />
-      <hr />
-      <div align="center" justify="center">
-        <h4>Gold Sponsor</h4>
-        <img src="/img/frame_oostende.png" alt="Gold Sponsor" />
-      </div>
-      <hr />
-      <AdCarousel />
     </v-main>
 
     <TheFooter />
