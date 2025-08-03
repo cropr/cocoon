@@ -1,6 +1,9 @@
+asyncssh==2.21.0
+asyncstdlib==3.13.1
+beautifulsoup4==4.13.4
+dotenv==0.9.9
+gunicorn==23.0.0
+openpyxl==3.1.5
+python-dotenv==1.1.1
 toml==0.10.2
-gunicorn==21.2.0
-python-dotenv==1.0.1
-openpyxl==3.1.2
-asyncssh==2.14.2
-libs/reddevil-3.3.8-py3-none-any.whl
+libs/reddevil-3.4.2-py3-none-any.whl

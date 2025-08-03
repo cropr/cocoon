@@ -1,23 +1,15 @@
 <script setup>
 import { ref } from "vue"
 
-const current = ref(0)
-const interval = 6
 const items = [
   { src: "/img/vanessa.jpg", name: "vanesa" },
   { src: "/img/frame_talistro.png", name: "talistro" },
   { src: "/img/frame_kbc.png", name: "kbc" },
-  { src: "/img/frame_oostende.png", name: "oostende" },
   { src: "/img/frame_bnpparibas.png", name: "bnpparibas" },
 ]
+const current = ref(Math.floor(Math.random() * items.length))
 
-function setupCarousel() {
-  let secCarousel = Math.floor((new Date() / 1000) % (interval * items.length))
-  current.value = Math.floor(secCarousel / items.length)
-  if (current.value == items.length) current.value = 0
-}
-
-onMounted(() => setupCarousel())
+console.log("AdCarousel current", current.value)
 </script>
 
 <template>
@@ -25,10 +17,10 @@ onMounted(() => setupCarousel())
     <v-carousel
       :show-arrows="false"
       hide-delimiters
-      :value="current"
+      v-model="current"
       height="170"
       class="adcarousel mb-2"
-      :interval="interval * 1000"
+      interval="5000"
       cycle
       continuous
     >

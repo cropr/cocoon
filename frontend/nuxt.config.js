@@ -32,12 +32,13 @@ export default defineNuxtConfig({
   },
 
   googleSignIn: {
-    clientId: '899786740417-dhtk8pilvkhkne3ht3c6ecbnm0619ijm.apps.googleusercontent.com',
+    clientId:
+      "899786740417-dhtk8pilvkhkne3ht3c6ecbnm0619ijm.apps.googleusercontent.com",
   },
 
   modules: [
     "@pinia/nuxt",
-    'nuxt-vue3-google-signin',    
+    "nuxt-vue3-google-signin",
     async (options, nuxt) => {
       nuxt.hooks.hook("vite:extendConfig", (config) =>
         config.plugins.push(vuetify())
@@ -55,7 +56,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiUrl: process.env.API_URL || "http://localhost:8000/",
-      statamicurl: process.env.STATAMIC_URL || "http://localhost:8000/",
+      wagtailUrl: process.env.WAGTAIL_URL || "http://localhost:8001/",
       repo_branch: "master",
     },
   },

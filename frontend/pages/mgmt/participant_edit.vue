@@ -52,11 +52,14 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend("accounts", "login", {
-      logintype: "google",
-      token: person.value.credentials,
-      username: null,
-      password: null,
+    reply = await $backend({
+      url: "/api/v1/accounts/login",
+      data: {
+        logintype: "google",
+        token: person.value.credentials,
+        username: null,
+        password: null,
+      },
     })
   } catch (error) {
     navigateTo("/mgmt")
@@ -70,9 +73,15 @@ async function create_pr() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend("payment", "mgmt_create_participant_pr", {
-      id: idparticipant,
-      token: mgmttoken.value,
+    reply = await $backend({
+      url: "/api/v1/participant/participant_pr",
+      method: "post",
+      data: {
+        id: idparticipant,
+      },
+      headers: {
+        Authorization: "Bearer " + mgmttoken.value,
+      },
     })
   } catch (error) {
     console.error("creating payment request", error)
@@ -93,9 +102,12 @@ async function delete_pr() {
   if (confirm("Are you sure to delete the linked payment request")) {
     showLoading(true)
     try {
-      reply = await $backend("payment", "mgmt_delete_participant_pr", {
-        id: idparticipant,
-        token: mgmttoken.value,
+      reply = await $backend({
+        url: `/api/v1/participant/participant_pr/${idparticipant}`,
+        method: "delete",
+        headers: {
+          Authorization: "Bearer " + mgmttoken.value,
+        },
       })
     } catch (error) {
       console.error("deleting linked payment request", error)
@@ -117,9 +129,12 @@ async function getParticipant() {
   // showLoading(true)
   try {
     console.log("getting participant", idparticipant)
-    reply = await $backend("participant", "mgmt_get_participant", {
-      id: idparticipant,
-      token: mgmttoken.value,
+    reply = await $backend({
+      method: "get",
+      url: "/api/v1/participant/" + idparticipant,
+      headers: {
+        Authorization: "Bearer " + mgmttoken.value,
+      },
     })
     readParticipant(reply.data)
   } catch (error) {
@@ -163,7 +178,6 @@ async function saveParticipant() {
         ratingbel: par.value.ratingbel,
         ratingfide: par.value.ratingfide,
       },
-      token: mgmttoken.value,
     })
   } catch (error) {
     console.error("saving getParticipant", error)

@@ -1,38 +1,54 @@
 <script setup>
-import { ref, watch } from "vue";
-import showdown from "showdown";
+import { ref } from "vue"
 
-const mdConverter = new showdown.Converter();
+// communication
+const { $backend } = useNuxtApp()
 
-const { $backend } = useNuxtApp();
-let page;
-const pagetitle = ref("");
-const pagecontent = ref("");
+//snackbar progessloading
+import ProgressLoading from "@/components/ProgressLoading.vue"
+import SnackbarMessage from "@/components/SnackbarMessage.vue"
+const refsnackbar = ref(null)
+let showSnackbar
+const refloading = ref(null)
+let showLoading
 
-async function getContent() {
+const pagetitle = ref("")
+const pagecontent = ref("")
+const pageintro = ref("")
+
+async function getPage(slug) {
+  console.log("getPage", slug)
+  showLoading(true)
   try {
-    const reply = await $backend("filestore", "anon_get_file", {
-      group: "pages",
-      name: "activities.md",
-    });
-    page = useMarkdown(reply.data);
-    console.log("page", page);
-    pagetitle.value = page.metadata.title;
-    pagecontent.value = page.html;
+    let reply = await $backend("wagtail", "get_page", {
+      slug: slug,
+    })
+    const page = reply.data
+    console.log("page", page)
+    pagetitle.value = page.title
+    pageintro.value = page.intro
+    pagecontent.value = page.body
   } catch (error) {
-    console.log("failed");
+    showSnackbar("Page loading failed")
+    console.log("getPage error", error)
+  } finally {
+    showLoading(false)
   }
 }
 
 onMounted(() => {
-  getContent();
-});
+  showSnackbar = refsnackbar.value.showSnackbar
+  showLoading = refloading.value.showLoading
+  getPage("side-activities")
+})
 </script>
 
 <template>
+  <SnackbarMessage ref="refsnackbar" />
+  <ProgressLoading ref="refloading" />
   <v-container>
     <h1>{{ pagetitle }}</h1>
-    <div v-html="pagecontent" class="markdowncontent"></div>
+    <div v-html="pagecontent"></div>
   </v-container>
 </template>
 
@@ -47,8 +63,10 @@ h1:after {
 ul {
   padding-left: 1rem;
 }
-
 .v-card-title {
   white-space: normal;
+}
+.nopadding {
+  padding: 0;
 }
 </style>
