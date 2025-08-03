@@ -51,14 +51,9 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend({
-      url: "/api/v1/accounts/anon/login",
-      data: {
-        logintype: "google",
-        token: person.value.credentials,
-        username: null,
-        password: null,
-      },
+    reply = await $backend("accounts", "login", {
+      logintype: "google",
+      token: person.value.credentials,
     })
   } catch (error) {
     console.log("cannot login", error)
@@ -69,32 +64,6 @@ async function checkAuth() {
   }
   console.log("mgmttoken received", reply.data)
   mgmtstore.updateToken(reply.data)
-}
-
-async function create_pr() {
-  let reply
-  showLoading(true)
-  try {
-    reply = await $backend({
-      url: "/api/v1/payment/participant_pr",
-      method: "post",
-      data: {
-        id: idregistration,
-        token: token.value,
-      },
-    })
-  } catch (error) {
-    console.error("creating payment request", error)
-    if (error.code === 401) {
-      router.push("/mgmt")
-    } else {
-      showSnackbar("Creating paymentrequesr failed: " + error.detail)
-    }
-    return
-  } finally {
-    showLoading(false)
-  }
-  router.push("/mgmt/paymentrequest_edit?id=" + reply.data)
 }
 
 async function getRegistration() {

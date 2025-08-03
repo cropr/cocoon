@@ -52,14 +52,9 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend({
-      url: "/api/v1/accounts/login",
-      data: {
-        logintype: "google",
-        token: person.value.credentials,
-        username: null,
-        password: null,
-      },
+    reply = await $backend("accounts", "login", {
+      logintype: "google",
+      token: person.value.credentials,
     })
   } catch (error) {
     navigateTo("/mgmt")
@@ -72,23 +67,18 @@ async function checkAuth() {
 async function create_pr() {
   let reply
   showLoading(true)
+  console.log("creating payment request for participant", idparticipant)
   try {
-    reply = await $backend({
-      url: "/api/v1/participant/participant_pr",
-      method: "post",
-      data: {
-        id: idparticipant,
-      },
-      headers: {
-        Authorization: "Bearer " + mgmttoken.value,
-      },
+    reply = await $backend("payment", "mgmt_create_participant_pr", {
+      id: idparticipant,
+      token: mgmttoken.value,
     })
   } catch (error) {
     console.error("creating payment request", error)
     if (error.code === 401) {
       router.push("/mgmt")
     } else {
-      showSnackbar("Creating paymentrequesr failed: " + error.detail)
+      showSnackbar("Creating paymentrequest failed: " + error.detail)
     }
     return
   } finally {
@@ -102,12 +92,9 @@ async function delete_pr() {
   if (confirm("Are you sure to delete the linked payment request")) {
     showLoading(true)
     try {
-      reply = await $backend({
-        url: `/api/v1/participant/participant_pr/${idparticipant}`,
-        method: "delete",
-        headers: {
-          Authorization: "Bearer " + mgmttoken.value,
-        },
+      reply = await $backend("payment", "mgmt_delete_participant_pr", {
+        id: idparticipant,
+        token: mgmttoken.value,
       })
     } catch (error) {
       console.error("deleting linked payment request", error)
@@ -129,12 +116,9 @@ async function getParticipant() {
   // showLoading(true)
   try {
     console.log("getting participant", idparticipant)
-    reply = await $backend({
-      method: "get",
-      url: "/api/v1/participant/" + idparticipant,
-      headers: {
-        Authorization: "Bearer " + mgmttoken.value,
-      },
+    reply = await $backend("participant", "mgmt_get_participant", {
+      id: idparticipant,
+      token: mgmttoken.value,
     })
     readParticipant(reply.data)
   } catch (error) {

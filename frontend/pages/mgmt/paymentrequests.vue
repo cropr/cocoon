@@ -55,14 +55,9 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend({
-      url: "/api/v1/accounts/anon/login",
-      data: {
-        logintype: "google",
-        token: person.value.credentials,
-        username: null,
-        password: null,
-      },
+    reply = await $backend("accounts", "login", {
+      logintype: "google",
+      token: person.value.credentials,
     })
   } catch (error) {
     console.log("cannot login", error)
@@ -83,12 +78,8 @@ async function getPaymentRequests() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend({
-      method: "get",
-      url: "/api/v1/payment/pr",
-      headers: {
-        Authorization: "Bearer " + token.value,
-      },
+    reply = await $backend("payment", "mgmt_get_paymentrequests", {
+      token: token.value,
     })
   } catch (error) {
     console.error("getting paymentrequests", error)
@@ -107,12 +98,6 @@ async function getPaymentRequests() {
   console.log("prqs", prqs.value)
 }
 
-function gotoLinked(item) {
-  if (item.reason == "lodging") {
-    router.push("/mgmt/reservation_edit/?id=" + item.id)
-  }
-}
-
 async function refresh() {
   await getPaymentRequests()
 }
@@ -120,12 +105,8 @@ async function refresh() {
 async function send_prs() {
   showLoading(true)
   try {
-    const reply = await $backend({
-      method: "post",
-      url: "/api/v1/payment/email_pr",
-      headers: {
-        Authorization: "Bearer " + token.value,
-      },
+    const reply = await $backend("payment", "mgmt_email_prs", {
+      token: token.value,
     })
   } catch (error) {
     console.error("getting paymentrequests", error)
@@ -144,12 +125,9 @@ async function send_prs() {
 async function send_pr(item) {
   showLoading(true)
   try {
-    const reply = await $backend({
-      method: "post",
-      url: "/api/v1/payment/email_pr/" + item.id,
-      headers: {
-        Authorization: "Bearer " + token.value,
-      },
+    const reply = await $backend("payment", "mgmt_email_pr", {
+      token: token.value,
+      id: item.id,
     })
   } catch (error) {
     console.error("getting paymentrequests", error)
