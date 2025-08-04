@@ -36,7 +36,7 @@ export default {
     })
   },
   mgmt_update_participant_pr: async function (options) {
-    console.log("calling api update pr bjk", options)
+    console.log("calling api update pr", options)
     const { token, id, prq } = options
     return await axios.put(`${prefix}/participant_pr/${id}`, prq, {
       headers: {
@@ -47,15 +47,15 @@ export default {
 
   // general
   mgmt_email_pr: async function (options) {
-    const { token, id, prq } = options
-    return await axios.post(`${prefix}/email_pr/${id}`, prq, {
+    const { token, id } = options
+    return await axios.post(`${prefix}/email_pr/${id}`, null, {
       headers: {
         Authorization: "Bearer " + token,
       },
     })
   },
   mgmt_email_prs: async function (options) {
-    const { token, id, prq } = options
+    const { token } = options
     return await axios.post(`${prefix}/email_pr`, null, {
       headers: {
         Authorization: "Bearer " + token,

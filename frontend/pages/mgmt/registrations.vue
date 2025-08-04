@@ -60,14 +60,9 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend({
-      url: "/api/v1/accounts/anon/login",
-      data: {
-        logintype: "google",
-        token: person.value.credentials,
-        username: null,
-        password: null,
-      },
+    reply = await $backend("accounts", "login", {
+      logintype: "google",
+      token: person.value.credentials,
     })
   } catch (error) {
     console.log("cannot login", error)
@@ -88,9 +83,8 @@ async function getRegistrations() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend({
-      url: "/api/v1/registration",
-      method: "get",
+    reply = await $backend("registration", "get_registrations", {
+      token: token.value,
     })
     registrations.value = reply.data
     console.log("regs", registrations.value)

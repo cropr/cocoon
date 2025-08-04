@@ -57,15 +57,9 @@ async function checkAuth() {
   showLoading(true)
   // now login using the Google auth token
   try {
-    reply = await $backend({
-      method: "post",
-      url: "/api/v1/account/anon/login",
-      data: {
-        logintype: "google",
-        token: person.value.credentials,
-        username: null,
-        password: null,
-      },
+    reply = await $backend("accounts", "login", {
+      logintype: "google",
+      token: person.value.credentials,
     })
   } catch (error) {
     navigateTo("/mgmt")
@@ -79,12 +73,9 @@ async function email() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend({
-      method: "post",
-      url: "/api/v1/payment/email_pr/" + idpaymentrequest,
-      headers: {
-        Authorization: "Bearer " + token.value,
-      },
+    reply = await $backend("payment", "mgmt_email_pr", {
+      id: idpaymentrequest,
+      token: token.value,
     })
   } catch (error) {
     console.error("email payment request failed", error)
@@ -103,12 +94,9 @@ async function get_paymentrequest() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend({
-      method: "get",
-      url: "/api/v1/payment/pr/" + idpaymentrequest,
-      headers: {
-        Authorization: "Bearer " + token.value,
-      },
+    reply = await $backend("payment", "mgmt_get_paymentrequest", {
+      id: idpaymentrequest,
+      token: token.value,
     })
     prq.value = reply.data
     prq.value.totalprice = prq.value.totalprice.toFixed(2)
@@ -129,18 +117,13 @@ async function savePayment() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend({
-      method: "post",
-      url: "/api/v1/payment/participant_pr/" + idpaymentrequest,
-      headers: {
-        Authorization: "Bearer " + token.value,
-      },
-      data: {
-        prq: {
-          remarks: prq.value.remarks,
-          paystatus: prq.value.paystatus,
-          paydate: prq.value.paystatus ? new Date().toISOString().substring(0, 10) : "",
-        },
+    reply = await $backend("payment", "mgmt_update_participant_pr", {
+      id: idpaymentrequest,
+      token: token.value,
+      prq: {
+        remarks: prq.value.remarks,
+        paystatus: prq.value.paystatus,
+        paydate: prq.value.paystatus ? new Date().toISOString().substring(0, 10) : "",
       },
     })
     showSnackbar("Payment saved")
@@ -161,21 +144,16 @@ async function saveProperties() {
   let reply
   showLoading(true)
   try {
-    reply = await $backend({
-      method: "post",
-      url: "/api/v1/payment/participant_pr/" + idpaymentrequest,
-      headers: {
-        Authorization: "Bearer " + token.value,
-      },
-      data: {
-        prq: {
-          address: prq.value.address,
-          email: prq.value.email,
-          enabled: prq.value.enabled,
-          first_name: prq.value.first_name,
-          last_name: prq.value.last_name,
-          locale: prq.value.locale,
-        },
+    reply = await $backend("payment", "mgmt_update_participant_pr", {
+      id: idpaymentrequest,
+      token: token.value,
+      prq: {
+        address: prq.value.address,
+        email: prq.value.email,
+        enabled: prq.value.enabled,
+        first_name: prq.value.first_name,
+        last_name: prq.value.last_name,
+        locale: prq.value.locale,
       },
     })
     showSnackbar("PR saved")

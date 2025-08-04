@@ -8,22 +8,14 @@ dependencies = [
     "asyncssh>=2.21.0",
     "asyncstdlib>=3.13.1",
     "beautifulsoup4>=4.13.4",
-    "dotenv>=0.9.9",
+    "fastapi>=0.116.1",
     "gunicorn>=23.0.0",
     "openpyxl>=3.1.5",
     "python-dotenv>=1.1.1",
     "reddevil",
     "toml>=0.10.2",
+    "uvicorn>=0.35.0",
 ]
-
-[tool.poetry.dependencies]
-python = "^3.11"
-toml = "^0.10.2"
-gunicorn = "^21.2.0"
-python-dotenv = "^1.0.1"
-openpyxl = "^3.1.2"
-asyncssh = "^2.14.2"
-reddevil = {path = "libs/reddevil-3.4.2-py3-none-any.whl"}
 
 [dependency-groups]
 dev = [
@@ -43,4 +35,7 @@ unfixable = []
 
 [tool.ruff.lint.per-file-ignores]
 "**/__init__.py" = ["E402"]
+
+[tool.uv.sources]
+reddevil = { path = "libs/reddevil-3.4.5-py3-none-any.whl" }
 
