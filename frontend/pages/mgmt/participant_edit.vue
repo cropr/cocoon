@@ -21,7 +21,7 @@ let showLoading
 
 // stores
 const mgmtstore = useMgmtTokenStore()
-const { token: mgmttoken } = storeToRefs(mgmtstore)
+const { token } = storeToRefs(mgmtstore)
 const personstore = usePersonStore()
 const { person } = storeToRefs(personstore)
 
@@ -38,8 +38,8 @@ function back() {
 }
 
 async function checkAuth() {
-  console.log("checking if auth is already set", mgmttoken.value)
-  if (mgmttoken.value) return
+  console.log("checking if auth is already set", token.value)
+  if (token.value) return
   if (person.value.credentials.length === 0) {
     router.push("/mgmt")
     return
@@ -71,7 +71,7 @@ async function create_pr() {
   try {
     reply = await $backend("payment", "mgmt_create_participant_pr", {
       id: idparticipant,
-      token: mgmttoken.value,
+      token: token.value,
     })
   } catch (error) {
     console.error("creating payment request", error)
@@ -94,7 +94,7 @@ async function delete_pr() {
     try {
       reply = await $backend("payment", "mgmt_delete_participant_pr", {
         id: idparticipant,
-        token: mgmttoken.value,
+        token: token.value,
       })
     } catch (error) {
       console.error("deleting linked payment request", error)
@@ -118,7 +118,7 @@ async function getParticipant() {
     console.log("getting participant", idparticipant)
     reply = await $backend("participant", "mgmt_get_participant", {
       id: idparticipant,
-      token: mgmttoken.value,
+      token: token.value,
     })
     readParticipant(reply.data)
   } catch (error) {
@@ -162,6 +162,7 @@ async function saveParticipant() {
         ratingbel: par.value.ratingbel,
         ratingfide: par.value.ratingfide,
       },
+      token: token.value,
     })
   } catch (error) {
     console.error("saving getParticipant", error)

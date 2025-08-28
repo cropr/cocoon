@@ -166,10 +166,12 @@ async def lookup_idbel(idbel: str) -> IdReply:
 
 async def lookup_idfide(idfide: str) -> IdReply:
     settings = get_settings()
+    logger.info(f"lookup_idfide {idfide}")
     # first see if we have a bel id for the
     url = api_fideis2belid.format(id=idfide)
     try:
         async with AsyncClient() as client:
+            logger.info(f"call kbsb server {url}")
             rc = await client.get(f"{settings.KBSB_HOST}{url}")
             if rc.status_code == 200 and rc.text and rc.text != "0":
                 idbel = rc.text
@@ -185,6 +187,7 @@ async def lookup_idfide(idfide: str) -> IdReply:
     url = api_lookupfide.format(id=idfide)
     try:
         async with AsyncClient() as client:
+            logger.info(f"call kbsb server {url}")
             rc = await client.get(f"{settings.KBSB_HOST}{url}")
             plyr = rc.json()
     except DecodingError:
