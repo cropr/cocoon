@@ -30,10 +30,12 @@ const headers = [
   { title: "Last Name", value: "last_name", sortable: true },
   { title: "First Name", value: "first_name", sortable: true },
   { title: "Category", value: "category", sortable: true },
+  { title: "Title", value: "chesstitle", sortable: true },
   { title: "ID Bel", value: "idbel" },
   { title: "ID Fide", value: "idfide" },
   { title: "Elo BEL", value: "ratingbel", sortable: true },
   { title: "Elo FIDE", value: "ratingfide", sortable: true },
+  { title: "Nat.", value: "nationalityfide", sortable: true },
   { title: "Actions", value: "action" },
 ]
 
