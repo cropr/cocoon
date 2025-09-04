@@ -226,7 +226,7 @@ wheels = [
 
 [[package]]
 name = "cocoon"
-version = "1.2.3"
+version = "1.2.4"
 source = { virtual = "." }
 dependencies = [
     { name = "asyncssh" },
