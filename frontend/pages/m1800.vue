@@ -7,7 +7,9 @@
     <h1>-1800 Tournament</h1>
     <div>
       The pairings and results are available on
-      <a href="https://chess-results.com/fed.aspx?lan=1&fed=BEL">ChessResults</a>.
+      <a href="https://s1.chess-results.com/tnr1248988.aspx" target="_blank"
+        >ChessResults</a
+      >.
     </div>
   </v-container>
 </template>
