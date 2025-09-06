@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="">
-  <title>Badges VK2024</title>
+  <title>Badges Cocoon 2025</title>
   <link href="/css/badge.css" rel="stylesheet">
   <link href="/css/catcolors.css" rel="stylesheet">
 
@@ -18,10 +18,9 @@
   <div class="badgepage">
     {% for badge in page %}
     <div class="badge_1 {{ badge.positionclass }}">
-      <div class="badgeleft">
-        <img src="{{ badge.photourl }}">
-      </div>
       <div class="badgemiddle">
+        <div class="badgename">Player</div>
+        <div class="badgename">&nbsp;</div>
         <div class="badgename">{{badge.first_name}}</div>
         <div class="badgename">{{badge.last_name}}</div>
         <div class="badgecategory">{{badge.category}}</div>

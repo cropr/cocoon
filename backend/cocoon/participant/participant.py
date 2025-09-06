@@ -157,7 +157,7 @@ async def generate_badges(cat: str, ids: str = ""):
     if cat:
         prts = await get_participants({"category": cat})
     else:
-        prts = await get_participants({"idbel": {"$in": ids.split(",")}})
+        prts = await get_participants({"idfide": {"$in": ids.split(",")}})
     logger.info(f"nr of participants {len(prts)}")
     pages = []
     badges = []
@@ -170,9 +170,6 @@ async def generate_badges(cat: str, ids: str = ""):
             "first_name": p.first_name,
             "last_name": p.last_name,
             "category": p.category.value,
-            # "meals": p.meals or "",
-            # "mealsclass": "badge_{}".format(p.meals or "NO"),
-            "photourl": f"/api/v1/participant/photo/{p.id}",
             "positionclass": "badge{0}{1}".format(cix, rix),
             "ix": ix,
         }

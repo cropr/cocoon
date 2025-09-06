@@ -9,8 +9,8 @@ from .md_participant import (
     Participant,
 )
 from .participant import (
-    # generate_badges,
-    # generate_namecards,
+    generate_badges,
+    generate_namecards,
     # generate_prizes,
     get_participants,
     get_participant,
@@ -31,8 +31,8 @@ __all__ = [
     "ParticipantDetail",
     "ParticipantItem",
     "ParticipantUpdate",
-    # "generate_badges",
-    # "generate_namecards",
+    "generate_badges",
+    "generate_namecards",
     # "generate_prizes",
     "get_participants",
     "get_participant",

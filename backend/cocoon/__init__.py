@@ -1,4 +1,7 @@
 import toml
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).parent.parent
 
 
 def read_version():

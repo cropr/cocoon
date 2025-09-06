@@ -6,11 +6,12 @@ from fastapi import HTTPException, APIRouter
 
 from reddevil.core import RdException
 
-from .wagtail import (
+from . import (
     wagtail_getpages,
     wagtail_getpage,
     wagtail_getimages,
     wagtail_getimage,
+    clearcache,
 )
 
 logger = logging.getLogger(__name__)
@@ -58,4 +59,15 @@ async def api_wagtail_getimage(title: str):
         raise HTTPException(status_code=e.status_code, detail=e.description)
     except Exception:
         logger.exception("failed api call wagtail_getimage")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+@router.post("/clearcache")
+async def api_wagtail_clearcache():
+    try:
+        return await clearcache()
+    except RdException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.description)
+    except Exception:
+        logger.exception("failed api call wagtail_clearcache")
         raise HTTPException(status_code=500, detail="Internal Server Error")

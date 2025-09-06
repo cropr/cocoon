@@ -17,10 +17,12 @@ const drawer = ref(false)
           <template #activator="{ props }">
             <v-list-item v-bind="props" title="Cocoon" />
           </template>
-          <v-list-item to="registration" title="Registration" />
+          <v-list-item to="open" title="Open Tournament" />
+          <v-list-item to="m1800" title="-1800 Tournament" />
+          <v-list-item to="senior" title="Senior Tournament" />
+          <v-list-item to="live" title="Live Games" />
           <v-list-item to="playing-schedule" title="Playing schedule" />
           <v-list-item href="/img/Cocoon2025.pdf" title="Brochure" />
-          <v-list-item to="participants" title="Participants" />
           <v-list-item to="rules" title="Tournament Rules" />
         </v-list-group>
         <v-list-group no-action>

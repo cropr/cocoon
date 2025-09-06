@@ -24,7 +24,7 @@ async def wagtail_getpages():
     global clear_cache_started, clear_cache_used
     if not clear_cache_started and clear_cache_used:
         clear_cache_started = True
-        await clear_cache()  # Start the cache clearing loop
+        await clearcache()  # Start the cache clearing loop
     url = get_settings().WAGTAIL_URL
     retry = 3
     while retry > 0:
@@ -184,7 +184,7 @@ async def wagtail_getimage(title: str):
     return doc
 
 
-async def clear_cache():
+async def clearcache():
     """
     Clear the Wagtail cache.
     """

@@ -4,9 +4,11 @@
 import logging
 import logging.config
 
+
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from reddevil.core import (
@@ -19,7 +21,7 @@ from reddevil.core import (
 # to support yaml/json mimetype
 # import mimetypes
 
-from . import version
+from . import version, ROOT_DIR
 
 
 @asynccontextmanager
@@ -46,6 +48,7 @@ logger = logging.getLogger(__name__)
 # logger.error("test error message")
 # logger.critical("test critical message")
 logger.info(f"Starting website cocoon {version} ...")
+logger.info(f"ROOT_DIR = {ROOT_DIR}")
 logger.info(f"Email settings {settings.EMAIL}")
 
 # add CORS middleware for dev only
@@ -62,9 +65,6 @@ app.add_middleware(
 # import api endpoints
 logger.info("loading api_account")
 from reddevil.account import api_account  # noqa F401
-
-logger.info("loading api_attendee")
-from cocoon.attendee import api_attendee  # noqa F401
 
 logger.info("loading api_filestore")
 from reddevil.filestore import api_filestore  # noqa F401
@@ -85,7 +85,6 @@ logger.info("loading api_wagtail")
 from cocoon.wagtail import api_wagtail  # noqa F401
 
 app.include_router(api_account.router)
-app.include_router(api_attendee.router)
 app.include_router(api_registration.router)
 app.include_router(api_filestore.router)
 app.include_router(api_participant.router)
@@ -95,8 +94,8 @@ app.include_router(api_wagtail.router)
 logger.info("Api's loaded")
 
 # static files
-# app.mount("/css", StaticFiles(directory="../static/css"), name="css")
-# app.mount("/img", StaticFiles(directory="../static/img"), name="img")
+app.mount("/css", StaticFiles(directory=ROOT_DIR / "static" / "css"), name="css")
+app.mount("/img", StaticFiles(directory=ROOT_DIR / "static" / "img"), name="img")
 
 # fetch the common
 
@@ -108,6 +107,15 @@ for route in app.routes:
 
 # importing test endpoints
 import cocoon.tst_endpoints  # noqa F401
+
+# if settings.COCOON_MODE != "production":
+#     css_static_files = StaticFiles(directory=ROOT_DIR / "static" / "css")
+#     img_static_files = StaticFiles(directory=ROOT_DIR / "static" / "img")
+#     app.mount("/css", css_static_files, name="css")
+#     app.mount("/img", img_static_files, name="img")
+#     logger.info(
+#         f"static dirs loaded {css_static_files.get_directories()}, {img_static_files.get_directories()}"
+#     )
 
 if settings.COCOON_MODE == "prodtest":
     from cocoon.adhoc import router  # noqa F401

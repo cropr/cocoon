@@ -13,8 +13,8 @@ from . import (
     ParticipantItem,
     ParticipantDetail,
     ParticipantUpdate,
-    # generate_badges,
-    # generate_namecards,
+    generate_badges,
+    generate_namecards,
     # generate_prizes,
     get_participants,
     get_participant,
@@ -103,45 +103,48 @@ async def api_mgmt_update_elo(
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-# @router.get("/namecards_cat/{cat}", response_class=HTMLResponse)
-# async def api_generate_namecards_cat(cat: str):
-#     try:
-#         return await generate_namecards(cat)
-#     except RdException as e:
-#         raise HTTPException(status_code=e.status_code, detail=e.description)
-#     except Exception:
-#         logger.exception("failed api call generate_namecards")
-#         raise HTTPException(status_code=500, detail="Internal Server Error")
+@router.get("/namecards_cat/{cat}", response_class=HTMLResponse)
+async def api_generate_namecards_cat(cat: str):
+    try:
+        return await generate_namecards(cat)
+    except RdException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.description)
+    except Exception:
+        logger.exception("failed api call generate_namecards")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
-# @router.get("/namecards_id/{ids}", response_class=HTMLResponse)
-# async def api_generate_namecards_ids(ids: str):
-#     try:
-#         return await generate_namecards(cat="", ids=ids)
-#     except RdException as e:
-#         raise HTTPException(status_code=e.status_code, detail=e.description)
-#     except Exception:
-#         logger.exception("failed api call generate_namecards")
-#         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-# @router.get("/badges_cat/{cat}", response_class=HTMLResponse)
-# async def api_generate_badges_cat(cat: str):
-#     try:
-#         return await generate_badges(cat)
-#     except RdException as e:
-#         raise HTTPException(status_code=e.status_code, detail=e.description)
-#     except Exception:
-#         logger.exception("failed api call generate_namecards")
-#         raise HTTPException(status_code=500, detail="Internal Server Error")
+@router.get("/namecards_id/{ids}", response_class=HTMLResponse)
+async def api_generate_namecards_ids(ids: str):
+    try:
+        return await generate_namecards(cat="", ids=ids)
+    except RdException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.description)
+    except Exception:
+        logger.exception("failed api call generate_namecards")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
-# @router.get("/badges_id//{ids}", response_class=HTMLResponse)
-# async def api_generate_badges_ids(ids: str):
-#     try:
-#         return await generate_badges(cat="", ids=ids)
-#     except RdException as e:
-#         raise HTTPException(status_code=e.status_code, detail=e.description)
-#     except Exception:
-#         logger.exception("failed api call generate_namecards")
-#         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+@router.get("/badges_cat/{cat}", response_class=HTMLResponse)
+async def api_generate_badges_cat(cat: str):
+    try:
+        return await generate_badges(cat)
+    except RdException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.description)
+    except Exception:
+        logger.exception("failed api call generate_namecards")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+@router.get("/badges_id//{ids}", response_class=HTMLResponse)
+async def api_generate_badges_ids(ids: str):
+    try:
+        return await generate_badges(cat="", ids=ids)
+    except RdException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.description)
+    except Exception:
+        logger.exception("failed api call generate_namecards")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.get("/photo/{id}", response_class=Response)

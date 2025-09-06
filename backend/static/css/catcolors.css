@@ -1,48 +1,19 @@
-.B8,
-.U8,
-.G8,
-.EXP {
+.open {
     background-color: #ff3385 !important;
 }
 
 
-.B10,
-.U10,
-.G10 {
+.m1800 {
     background-color: #ff944d !important;
 }
 
 
-.B12,
-.U12,
-.G12 {
+.sen {
     background-color: #ffff4d !important;
 }
 
-.B14,
-.U14,
-.G14,
-.VK {
+.guest {
     background-color: #79ff4d !important;
-}
-
-.B16,
-.U16,
-.G16 {
-    background-color: #4dffff !important;
-}
-
-.B18,
-.U18,
-.G18 {
-    background-color: #4d94ff !important;
-}
-
-.B20,
-.G20,
-.U20,
-.SEN {
-    background-color: #a64dff !important;
 }
 
 .ORG {
@@ -51,8 +22,4 @@
 
 .ARB {
     background-color: #316299 !important;
-}
-
-.IMT {
-    background-color: #387961 !important;
 }
