@@ -7,7 +7,7 @@
     <h1>Open Tournament</h1>
     <div>
       The pairings and results are available on
-      <a href="https://s3.chess-results.com/tnr1248994.aspx" target="_blank"
+      <a href="https://s3.chess-results.com/tnr1249131.aspx" target="_blank"
         >ChessResults</a
       >.
     </div>
