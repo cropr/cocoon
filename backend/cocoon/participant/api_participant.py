@@ -136,7 +136,7 @@ async def api_generate_badges_cat(cat: str):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@router.get("/badges_id//{ids}", response_class=HTMLResponse)
+@router.get("/badges_ids/{ids}", response_class=HTMLResponse)
 async def api_generate_badges_ids(ids: str):
     try:
         return await generate_badges(cat="", ids=ids)
