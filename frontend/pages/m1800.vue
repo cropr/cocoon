@@ -7,7 +7,7 @@
     <h1>-1800 Tournament</h1>
     <div>
       The pairings and results are available on
-      <a href="https://s1.chess-results.com/tnr1249887.aspx" target="_blank"
+      <a href="https://s3.chess-results.com/tnr1249962.aspx" target="_blank"
         >ChessResults</a
       >.
     </div>
